@@ -7,8 +7,8 @@ const GENDER_FEMALE: &str = "female";
 pub fn name(gender: &str) -> &str {
     if gender == GENDER_FEMALE {
         let person = person::Person::new();
-        let random_number = generate_random_number(&person.first_name_male);
-        person.first_name_male[random_number]
+        let random_number = generate_random_number(&person.first_name_female);
+        person.first_name_female[random_number]
     } else if gender == GENDER_MALE {
         let person = person::Person::new();
         let random_number = generate_random_number(&person.first_name_male);
