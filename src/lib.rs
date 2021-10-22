@@ -29,4 +29,10 @@ mod tests {
         println!("{}", name);
         assert!(male_female_first_names.contains(&name));
     }
+
+    #[test]
+    #[should_panic(expected = "Unknown gender")]
+    fn unknown_gender_will_panic() {
+        person::first_name(Some("lorem"));
+    }
 }
