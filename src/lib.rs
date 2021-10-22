@@ -5,11 +5,11 @@ mod tests {
     use crate::provider::*;
 
     #[test]
-    fn first_name_can_be_generated() {
+    fn male_first_name_can_be_generated() {
         let name = person::first_name(Some("male"));
+        let male_names = en_us::person::Person::new().first_name_male;
         println!("{}", name);
-        let empty_string = "";
-        assert_ne!(name, empty_string);
+        assert!(male_names.contains(&name));
     }
 
     #[test]
