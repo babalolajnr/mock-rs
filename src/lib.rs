@@ -20,5 +20,13 @@ mod tests {
         assert!(female_names.contains(&name));
     }
 
-
+    #[test]
+    fn male_or_female_name_can_be_generated() {
+        let name = person::name("");
+        let mut person = en_us::person::Person::new();
+        let mut male_female_first_names = person.first_name_female;
+        male_female_first_names.append(&mut person.first_name_male);
+        println!("{}", name);
+        assert!(male_female_first_names.contains(&name));
+    }
 }
