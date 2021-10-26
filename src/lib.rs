@@ -44,4 +44,13 @@ mod tests {
         let name: Vec<&str> = name.rsplit(" ").collect();
         assert!(female_first_names.contains(&name[1]));
     }
+
+    #[test]
+    fn male_name_can_be_generated() {
+        let name = person::name(Some("male"));
+        let male_first_names = en_us::person::Person::new().first_name_male;
+        println!("{}", name);
+        let name: Vec<&str> = name.rsplit(" ").collect();
+        assert!(male_first_names.contains(&name[1]));
+    }
 }
