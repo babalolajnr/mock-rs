@@ -188,4 +188,11 @@ mod tests {
         let male_titles = super::male_titles();
         assert!(male_titles.contains(&male_title.as_str()));
     }
+
+    #[test]
+    fn female_title() {
+        let female_title = super::title(Some("female"));
+        let female_titles = super::male_titles();
+        assert!(female_titles.contains(&female_title.as_str()));
+    }
 }
