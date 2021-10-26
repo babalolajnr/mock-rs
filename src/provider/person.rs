@@ -58,10 +58,13 @@ pub fn first_name(gender: Option<&str>) -> String {
     }
 }
 
-// fn first_name_male() -> String {
-//     let random_index = generate_random_index(&person.first_name_female);
-//     person.first_name_female[random_index].to_string()
-// }
+fn first_name_male() -> String {
+    let person = person::Person::new();
+
+    let random_index = generate_random_index(&person.first_name_male);
+    person.first_name_male[random_index].to_string()
+}
+
 
 fn generate_random_index(arr: &[&str]) -> usize {
     let random_index = thread_rng().gen_range(1..arr.len());
@@ -115,5 +118,12 @@ mod tests {
         let male_first_names = en_us::person::Person::new().first_name_male;
         let name: Vec<&str> = name.rsplit(" ").collect();
         assert!(male_first_names.contains(&name[1]));
+    }
+
+    #[test]
+    fn first_name_male() {
+        let first_name_male = super::first_name_male();
+        let male_names = en_us::person::Person::new().first_name_male;
+        assert!(male_names.contains(&first_name_male.as_str()));
     }
 }
