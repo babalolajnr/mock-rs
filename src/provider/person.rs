@@ -5,19 +5,28 @@ const GENDER_MALE: &str = "male";
 const GENDER_FEMALE: &str = "female";
 
 pub fn name(gender: Option<&str>) -> String {
-    let person = person::Person::new();
-
     match gender {
         Some(GENDER_MALE) => {
-            let male_name = random_element(&person.first_name_male);
-            let last_name = random_element(&person.last_name);
+            let male_name = first_name_male();
+            let last_name = last_name();
             format!("{} {}", male_name, last_name)
         }
 
         Some(GENDER_FEMALE) => {
-            let female_name = random_element(&person.first_name_female);
-            let last_name = random_element(&person.last_name);
+            let female_name = first_name_female();
+            let last_name = last_name();
             format!("{} {}", female_name, last_name)
+        }
+
+        None => {
+            let mut person = person::Person::new();
+            let mut first_names = person.first_name_male;
+            first_names.append(&mut person.first_name_female);
+            format!(
+                "{} {}",
+                random_element(&first_names),
+                random_element(&person.last_name)
+            )
         }
 
         _ => {
@@ -143,6 +152,12 @@ mod tests {
         let male_first_names = en_us::person::Person::new().first_name_male;
         let name: Vec<&str> = name.rsplit(" ").collect();
         assert!(male_first_names.contains(&name[1]));
+    }
+
+    #[test]
+    fn name() {
+        let name = super::name(None);
+        assert_ne!("", name);
     }
 
     #[test]
