@@ -181,4 +181,11 @@ mod tests {
         let title = super::title(None);
         assert_ne!(title, "");
     }
+
+    #[test]
+    fn male_title() {
+        let male_title = super::title(Some("male"));
+        let male_titles = super::male_titles();
+        assert!(male_titles.contains(&male_title.as_str()));
+    }
 }
