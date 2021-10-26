@@ -38,12 +38,8 @@ pub fn first_name(gender: Option<&str>) -> String {
     let mut person = person::Person::new();
 
     match gender {
-        Some(GENDER_FEMALE) => {
-           first_name_female()
-        }
-        Some(GENDER_MALE) => {
-            first_name_male()
-        }
+        Some(GENDER_FEMALE) => first_name_female(),
+        Some(GENDER_MALE) => first_name_male(),
         None => {
             let mut male_female_first_names = person.first_name_male;
             male_female_first_names.append(&mut person.first_name_female);
@@ -72,15 +68,42 @@ pub fn first_name_female() -> String {
 
 pub fn last_name() -> String {
     let person = person::Person::new();
-    
+
     let random_index = generate_random_index(&person.last_name);
     person.last_name[random_index].to_string()
 }
 
+pub fn title(gender: Option<&str>) -> String {
+    match gender {
+        Some(GENDER_MALE) => random_element(&male_titles()).to_string(),
+        Some(GENDER_FEMALE) => random_element(&female_titles()).to_string(),
+        None => {
+            let mut titles = male_titles();
+            titles.append(&mut female_titles());
+            random_element(&titles).to_string()
+        }
+        _ => {
+            panic!("Unknown Gender")
+        }
+    }
+}
 
-fn generate_random_index(arr: &[&str]) -> usize {
+fn male_titles() -> Vec<&'static str> {
+    vec!["Mr.", "Dr.", "Prof."]
+}
+
+fn female_titles() -> Vec<&'static str> {
+    vec!["Mrs.", "Ms.", "Miss", "Dr.", "Prof."]
+}
+
+fn generate_random_index<T>(arr: &[T]) -> usize {
     let random_index = thread_rng().gen_range(1..arr.len());
     random_index
+}
+
+fn random_element<T>(arr: &[T]) -> &T {
+    let random_index = generate_random_index(&arr);
+    &arr[random_index]
 }
 
 #[cfg(test)]
@@ -147,9 +170,15 @@ mod tests {
     }
 
     #[test]
-    fn last_name_female() {
+    fn last_name() {
         let last_name = super::last_name();
         let last_names = en_us::person::Person::new().last_name;
         assert!(last_names.contains(&last_name.as_str()));
+    }
+
+    #[test]
+    fn title() {
+        let title = super::title(None);
+        assert_ne!(title, "");
     }
 }
