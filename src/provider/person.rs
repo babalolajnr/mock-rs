@@ -39,12 +39,10 @@ pub fn first_name(gender: Option<&str>) -> String {
 
     match gender {
         Some(GENDER_FEMALE) => {
-            let random_index = generate_random_index(&person.first_name_female);
-            person.first_name_female[random_index].to_string()
+           first_name_female()
         }
         Some(GENDER_MALE) => {
-            let random_index = generate_random_index(&person.first_name_male);
-            person.first_name_male[random_index].to_string()
+            first_name_male()
         }
         None => {
             let mut male_female_first_names = person.first_name_male;
