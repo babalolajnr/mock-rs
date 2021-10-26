@@ -53,23 +53,17 @@ pub fn first_name(gender: Option<&str>) -> String {
 
 pub fn first_name_male() -> String {
     let person = person::Person::new();
-
-    let random_index = generate_random_index(&person.first_name_male);
-    person.first_name_male[random_index].to_string()
+    random_element(&person.first_name_male).to_string()
 }
 
 pub fn first_name_female() -> String {
     let person = person::Person::new();
-
-    let random_index = generate_random_index(&person.first_name_female);
-    person.first_name_female[random_index].to_string()
+    random_element(&person.first_name_female).to_string()
 }
 
 pub fn last_name() -> String {
     let person = person::Person::new();
-
-    let random_index = generate_random_index(&person.last_name);
-    person.last_name[random_index].to_string()
+    random_element(&person.last_name).to_string()
 }
 
 pub fn title(gender: Option<&str>) -> String {
