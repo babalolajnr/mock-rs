@@ -9,23 +9,15 @@ pub fn name(gender: Option<&str>) -> String {
 
     match gender {
         Some(GENDER_MALE) => {
-            let first_name_random_index = generate_random_index(&person.first_name_male);
-            let last_name_random_index = generate_random_index(&person.last_name);
-            let mut male_name: String = String::from("");
-            male_name.push_str(person.first_name_male[first_name_random_index]);
-            male_name.push_str(" ");
-            male_name.push_str(person.last_name[last_name_random_index]);
-            male_name
+            let male_name = random_element(&person.first_name_male);
+            let last_name = random_element(&person.last_name);
+            format!("{} {}", male_name, last_name)
         }
 
         Some(GENDER_FEMALE) => {
-            let first_name_random_index = generate_random_index(&person.first_name_female);
-            let last_name_random_index = generate_random_index(&person.last_name);
-            let mut female_name = String::from("");
-            female_name.push_str(person.first_name_female[first_name_random_index]);
-            female_name.push_str(" ");
-            female_name.push_str(person.last_name[last_name_random_index]);
-            female_name
+            let female_name = random_element(&person.first_name_female);
+            let last_name = random_element(&person.last_name);
+            format!("{} {}", female_name, last_name)
         }
 
         _ => {
@@ -35,16 +27,14 @@ pub fn name(gender: Option<&str>) -> String {
 }
 
 pub fn first_name(gender: Option<&str>) -> String {
-    let mut person = person::Person::new();
-
     match gender {
         Some(GENDER_FEMALE) => first_name_female(),
         Some(GENDER_MALE) => first_name_male(),
         None => {
-            let mut male_female_first_names = person.first_name_male;
-            male_female_first_names.append(&mut person.first_name_female);
-            let random_index = generate_random_index(&male_female_first_names);
-            male_female_first_names[random_index].to_string()
+            let mut person = person::Person::new();
+            let mut names = person.first_name_male;
+            names.append(&mut person.first_name_female);
+            random_element(&names).to_string()
         }
         _ => {
             panic!("Unknown gender")
@@ -192,7 +182,7 @@ mod tests {
     #[test]
     fn female_title() {
         let female_title = super::title(Some("female"));
-        let female_titles = super::male_titles();
+        let female_titles = super::female_titles();
         assert!(female_titles.contains(&female_title.as_str()));
     }
 }
