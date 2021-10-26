@@ -70,6 +70,13 @@ pub fn first_name_female() -> String {
     person.first_name_female[random_index].to_string()
 }
 
+pub fn last_name() -> String {
+    let person = person::Person::new();
+    
+    let random_index = generate_random_index(&person.last_name);
+    person.last_name[random_index].to_string()
+}
+
 
 fn generate_random_index(arr: &[&str]) -> usize {
     let random_index = thread_rng().gen_range(1..arr.len());
@@ -137,5 +144,12 @@ mod tests {
         let first_name_female = super::first_name_female();
         let female_names = en_us::person::Person::new().first_name_female;
         assert!(female_names.contains(&first_name_female.as_str()));
+    }
+
+    #[test]
+    fn last_name_female() {
+        let last_name = super::last_name();
+        let last_names = en_us::person::Person::new().last_name;
+        assert!(last_names.contains(&last_name.as_str()));
     }
 }
