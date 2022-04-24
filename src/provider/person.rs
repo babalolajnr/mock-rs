@@ -1,5 +1,7 @@
-use super::en_us::person;
+
 use rand::prelude::*;
+
+use super::en_us::person;
 
 const GENDER_MALE: &str = "male";
 const GENDER_FEMALE: &str = "female";
