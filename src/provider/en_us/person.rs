@@ -1,14 +1,18 @@
-pub struct Person {
-    pub first_name_male: Vec<&'static str>,
-    pub first_name_female: Vec<&'static str>,
-    pub last_name: Vec<&'static str>,
-    // pub male_name_formats: Vec<&'static str>,
-    // pub female_name_formats: Vec<&'static str>,
-    pub suffix: Vec<&'static str>,
+use crate::provider::base::Base;
+
+pub struct Person<'a> {
+    pub first_name_male: Vec<&'a str>,
+    pub first_name_female: Vec<&'a str>,
+    pub last_name: Vec<&'a str>,
+    pub male_name_formats: Vec<&'a str>,
+    pub female_name_formats: Vec<&'a str>,
+    pub suffix: Vec<&'a str>,
 }
 
-impl Person {
-    pub fn new() -> Person {
+impl<'a> Base for Person<'a> {}
+
+impl<'a> Person<'a> {
+    pub fn new() -> Person<'a> {
         Person {
             first_name_male: vec![
                 "Aaron",
@@ -3502,6 +3506,30 @@ impl Person {
             suffix: vec![
                 "Jr.", "Sr.", "I", "II", "III", "IV", "V", "MD", "DDS", "PhD", "DVM",
             ],
+
+            male_name_formats: vec![
+                "{{firstNameMale}} {{lastName}}",
+                "{{firstNameMale}} {{lastName}}",
+                "{{firstNameMale}} {{lastName}}",
+                "{{firstNameMale}} {{lastName}}",
+                "{{titleMale}} {{firstNameMale}} {{lastName}}",
+                "{{firstNameMale}} {{lastName}} {{suffix}}",
+                "{{titleMale}} {{firstNameMale}} {{lastName}} {{suffix}}",
+            ],
+
+            female_name_formats: vec![
+                "{{firstNameFemale}} {{lastName}}",
+                "{{firstNameFemale}} {{lastName}}",
+                "{{firstNameFemale}} {{lastName}}",
+                "{{firstNameFemale}} {{lastName}}",
+                "{{titleFemale}} {{firstNameFemale}} {{lastName}}",
+                "{{firstNameFemale}} {{lastName}} {{suffix}}",
+                "{{titleFemale}} {{firstNameFemale}} {{lastName}} {{suffix}}",
+            ],
         }
+    }
+
+    fn suffix(&'a self) -> &'a str {
+        Self::random_element(&self.suffix)
     }
 }
