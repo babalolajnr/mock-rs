@@ -10,7 +10,7 @@ impl<'a> Generator<'a> {
     //     if self.formatters.contains(&format) {
     //         return format
     //     }else if() {
-            
+
     //     }
     // }
 

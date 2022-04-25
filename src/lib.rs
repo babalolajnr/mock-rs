@@ -1,3 +1,3 @@
-mod provider;
-mod generator;
 mod factory;
+mod generator;
+mod provider;

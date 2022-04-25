@@ -1,4 +1,4 @@
 const DEFAULT_LOCALE: &str = "en-US";
-struct Factory<'a>{
+struct Factory<'a> {
     default_providers: Vec<&'a str>,
 }
