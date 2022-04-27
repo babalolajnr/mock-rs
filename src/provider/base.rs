@@ -39,11 +39,12 @@ pub trait Base {
 mod tests {
     use super::*;
 
+    struct Test;
+    impl Base for Test {}
+
     #[test]
     fn numerify_works() {
         let string = "####";
-        struct Test;
-        impl Base for Test {}
 
         let result = Test::numerify(Some(string));
         assert_eq!(result.len(), string.len());
@@ -52,8 +53,6 @@ mod tests {
     #[test]
     fn numerify_works_with_no_string() {
         let string = None;
-        struct Test;
-        impl Base for Test {}
 
         let result = Test::numerify(string);
         assert_eq!(result.len(), 4);
@@ -62,8 +61,6 @@ mod tests {
     #[test]
     fn numerify_works_with_string_of_hashes_mixed_with_other_chars() {
         let string = "Hello #####";
-        struct Test;
-        impl Base for Test {}
 
         let result = Test::numerify(Some(string));
         assert_eq!(result.len(), string.len());
@@ -72,8 +69,6 @@ mod tests {
     #[test]
     fn generate_random_index_works() {
         let arr = vec![1, 2, 3, 4, 5];
-        struct Test;
-        impl Base for Test {}
 
         let result = Test::generate_random_index(&arr);
         assert!(result < arr.len());
@@ -82,8 +77,6 @@ mod tests {
     #[test]
     fn random_element_works() {
         let arr = vec!["a", "b", "c", "d", "e"];
-        struct Test;
-        impl Base for Test {}
 
         let result = Test::random_element(&arr);
         assert!(arr.contains(&result));
