@@ -2,7 +2,7 @@ use rand::{thread_rng, Rng};
 pub trait Base {
     /// Returns a index from array/vector
     fn generate_random_index<T>(arr: &[T]) -> usize {
-        let random_index = thread_rng().gen_range(1..arr.len());
+        let random_index = thread_rng().gen_range(0..arr.len());
         random_index
     }
 
