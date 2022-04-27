@@ -28,17 +28,21 @@ impl<'a> Address<'a> {
         }
     }
 
-    pub fn city_suffix(&'a self) -> &'a str {
+    /// Get random city suffix
+    fn city_suffix(&'a self) -> &'a str {
         Self::random_element(&self.city_suffix)
     }
 
-    pub fn street_suffix(&'a self) -> &'a str {
+    /// Get random street suffix
+    fn street_suffix(&'a self) -> &'a str {
         Self::random_element(&self.street_suffix)
     }
 
-    pub fn building_number(&'a self) -> String {
+    /// Get building number
+    fn building_number(&'a self) -> String {
         Self::numerify(Some(Self::random_element(&self.building_number)))
     }
+    
 }
 
 impl<'a> Base for Address<'a> {}
