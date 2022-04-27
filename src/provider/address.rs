@@ -1,5 +1,6 @@
 use super::base::Base;
 
+#[derive(Debug)]
 struct Address<'a> {
     city_suffix: Vec<&'a str>,
     street_suffix: Vec<&'a str>,
@@ -27,17 +28,43 @@ impl<'a> Address<'a> {
         }
     }
 
-    pub fn city_suffix(&self) -> &'a str {
+    pub fn city_suffix(&'a self) -> &'a str {
         Self::random_element(&self.city_suffix)
     }
 
-    pub fn street_suffix(&self) -> &'a str {
+    pub fn street_suffix(&'a self) -> &'a str {
         Self::random_element(&self.street_suffix)
     }
 
-    // pub fn building_number(&self) -> &'a str {
-    //     Self::random_element(&self.building_number)
-    // }
+    pub fn building_number(&'a self) -> String {
+        Self::numerify(Some(Self::random_element(&self.building_number)))
+    }
 }
 
 impl<'a> Base for Address<'a> {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn city_suffix_works() {
+        let address = Address::new();
+        let result = address.city_suffix();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn street_suffix_works() {
+        let address = Address::new();
+        let result = address.street_suffix();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn building_number_works() {
+        let address = Address::new();
+        let result = address.building_number();
+        assert!(result.len() > 0);
+    }
+}
