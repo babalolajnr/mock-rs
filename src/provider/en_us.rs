@@ -2,6 +2,7 @@ use super::locale::Locale;
 
 pub mod person;
 pub mod provider;
+pub mod address;
 
 pub(crate) struct EnUS {}
 
