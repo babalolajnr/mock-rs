@@ -3508,28 +3508,28 @@ impl<'a> Person<'a> {
             ],
 
             male_name_formats: vec![
-                "{{firstNameMale}} {{lastName}}",
-                "{{firstNameMale}} {{lastName}}",
-                "{{firstNameMale}} {{lastName}}",
-                "{{firstNameMale}} {{lastName}}",
-                "{{titleMale}} {{firstNameMale}} {{lastName}}",
-                "{{firstNameMale}} {{lastName}} {{suffix}}",
-                "{{titleMale}} {{firstNameMale}} {{lastName}} {{suffix}}",
+                "{{first_nameMale}} {{last_name}}",
+                "{{first_nameMale}} {{last_name}}",
+                "{{first_nameMale}} {{last_name}}",
+                "{{first_nameMale}} {{last_name}}",
+                "{{titleMale}} {{first_nameMale}} {{last_name}}",
+                "{{first_nameMale}} {{last_name}} {{suffix}}",
+                "{{titleMale}} {{first_nameMale}} {{last_name}} {{suffix}}",
             ],
 
             female_name_formats: vec![
-                "{{firstNameFemale}} {{lastName}}",
-                "{{firstNameFemale}} {{lastName}}",
-                "{{firstNameFemale}} {{lastName}}",
-                "{{firstNameFemale}} {{lastName}}",
-                "{{titleFemale}} {{firstNameFemale}} {{lastName}}",
-                "{{firstNameFemale}} {{lastName}} {{suffix}}",
-                "{{titleFemale}} {{firstNameFemale}} {{lastName}} {{suffix}}",
+                "{{first_nameFemale}} {{last_name}}",
+                "{{first_nameFemale}} {{last_name}}",
+                "{{first_nameFemale}} {{last_name}}",
+                "{{first_nameFemale}} {{last_name}}",
+                "{{titleFemale}} {{first_nameFemale}} {{last_name}}",
+                "{{first_nameFemale}} {{last_name}} {{suffix}}",
+                "{{titleFemale}} {{first_nameFemale}} {{last_name}} {{suffix}}",
             ],
         }
     }
 
     fn suffix(&'a self) -> &'a str {
-        Self::random_element(&self.suffix)
+        self.random_element(&self.suffix)
     }
 }
