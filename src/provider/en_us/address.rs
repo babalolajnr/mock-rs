@@ -557,21 +557,23 @@ impl Address {
                 "Zimbabwe",
             ],
             city_formats: vec![
-                "{{cityPrefix}} {{firstName}}{{citySuffix}}",
-                "{{cityPrefix}} {{firstName}}",
-                "{{firstName}}{{citySuffix}}",
-                "{{lastName}}{{citySuffix}}",
+                "{{city_prefix}} {{first_name}}{{city_suffix}}",
+                "{{city_prefix}} {{first_name}}",
+                "{{first_name}}{{city_suffix}}",
+                "{{last_name}}{{city_suffix}}",
             ],
             street_name_formats: vec![
-                "{{firstName}} {{streetSuffix}}",
-                "{{lastName}} {{streetSuffix}}",
+                "{{first_name}} {{street_suffix}}",
+                "{{last_name}} {{street_suffix}}",
             ],
             street_address_formats: vec![
-                "{{buildingNumber}} {{streetName}}",
-                "{{buildingNumber}} {{streetName}} {{secondaryAddress}}",
+                "{{building_number}} {{street_name}}",
+                "{{building_number}} {{street_name}} {{secondary_address}}",
             ],
-            address_formats: vec!["{{streetAddress}}\n{{city}}, {{stateAbbr}} {{postcode}}"],
+            address_formats: vec!["{{street_address}}\n{{city}}, {{state_abbr}} {{postcode}}"],
             secondary_address_formats: vec!["Apt. ###", "Suite ###"],
         }
     }
 }
+
+// impl
