@@ -1,8 +1,7 @@
-use super::base::Base;
+use super::{base::Base, Provider};
 
 #[derive(Debug)]
-#[allow(dead_code)]
-struct Address<'a> {
+pub struct Address<'a> {
     city_suffix: Vec<&'a str>,
     street_suffix: Vec<&'a str>,
     city_formats: Vec<&'a str>,
@@ -14,7 +13,6 @@ struct Address<'a> {
     country: Vec<&'a str>,
 }
 
-#[allow(dead_code)]
 impl<'a> Address<'a> {
     pub fn new() -> Self {
         Self {
@@ -75,5 +73,11 @@ mod tests {
         let address = Address::new();
         let result = address.building_number();
         assert!(result.len() > 0);
+    }
+}
+
+impl Provider for Address<'_> {
+    fn name<'a>(&self) -> &'a str {
+        "address"
     }
 }
