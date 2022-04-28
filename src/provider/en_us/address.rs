@@ -1,4 +1,4 @@
-struct Address {
+struct Address<'a> {
     city_prefix: Vec<&'a str>,
     city_suffix: Vec<&'a str>,
     building_number: Vec<&'a str>,
@@ -14,7 +14,7 @@ struct Address {
     secondary_address_formats: Vec<&'a str>,
 }
 
-impl Address {
+impl Address<'_> {
     pub fn new() -> Self {
         Self {
             city_prefix: vec!["North", "East", "West", "South", "New", "Lake", "Port"],
