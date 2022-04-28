@@ -1,10 +1,11 @@
+use super::Provider;
+
 enum Gender {
     Male,
     Female,
 }
-struct Person {
+pub(crate) struct Person {
     gender: Gender,
-    // titleFormat:
 }
 
 trait Format<'a> {
@@ -47,8 +48,20 @@ trait Format<'a> {
 
 impl<'a> Format<'a> for Person {}
 
+impl Provider for Person {
+    fn name<'a>(&self) -> &'a str {
+        "person"
+    }
+}
+
 impl<'a> Person {
     pub fn first_name() -> &'a str {
         "John"
     }
+    pub fn new() -> Self {
+        Self {
+            gender: Gender::Male,
+        }
+    }
 }
+
