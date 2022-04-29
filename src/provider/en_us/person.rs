@@ -9,7 +9,11 @@ pub struct Person<'a> {
     pub suffix: Vec<&'a str>,
 }
 
-impl<'a> Base for Person<'a> {}
+impl<'a> Base for Person<'a> {
+    fn call_method(&self, string: &str) -> Result<String, crate::error::Errors> {
+        todo!()
+    }
+}
 
 impl<'a> Person<'a> {
     pub fn new() -> Person<'a> {
