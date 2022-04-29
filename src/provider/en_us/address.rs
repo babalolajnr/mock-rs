@@ -1,4 +1,4 @@
-struct Address<'a> {
+pub struct Address<'a> {
     city_prefix: Vec<&'a str>,
     city_suffix: Vec<&'a str>,
     building_number: Vec<&'a str>,
