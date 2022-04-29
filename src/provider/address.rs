@@ -1,4 +1,4 @@
-use super::{base::Base, Provider};
+use super::base::Base;
 
 #[derive(Debug)]
 pub struct Address<'a> {
@@ -44,7 +44,7 @@ impl<'a> Address<'a> {
     }
 
     fn city() -> String {
-        todo!()
+        panic!("Use the")
     }
 }
 
@@ -73,11 +73,5 @@ mod tests {
         let address = Address::new();
         let result = address.building_number();
         assert!(result.len() > 0);
-    }
-}
-
-impl Provider for Address<'_> {
-    fn name<'a>(&self) -> &'a str {
-        "address"
     }
 }
