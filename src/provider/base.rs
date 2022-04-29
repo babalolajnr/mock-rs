@@ -1,4 +1,7 @@
 use rand::{thread_rng, Rng};
+
+use crate::error::Errors;
+
 pub trait Base {
     /// Returns a index from array/vector
     fn generate_random_index<T>(&self, arr: &[T]) -> usize {
@@ -34,9 +37,24 @@ pub trait Base {
         random_string
     }
 
+    /// Replaces tokens ('{{ tokenName }}') with the result from the token method call
     fn parse(&self, string: &str) -> String {
-        todo!()
+        let mut result = String::new();
+
+        let mut tokens = string.split("{{");
+        result.push_str(tokens.next().unwrap());
+
+        for token in tokens {
+            let token_name = token.split(" }}").next().unwrap();
+            let token_value = self.call_method(token_name.trim());
+
+            result.push_str(&token_value.unwrap());
+        }
+
+        result
     }
+
+    fn call_method(&self, string: &str) -> Result<String, Errors>;
 }
 
 #[cfg(test)]
@@ -44,7 +62,20 @@ mod tests {
     use super::*;
 
     struct Test;
-    impl Base for Test {}
+    impl Base for Test {
+        fn call_method(&self, string: &str) -> Result<String, Errors> {
+            match string {
+                "first_name_male" => Ok(self.first_name_male().to_string()),
+                _ => Err(Errors::MethodNotFoundError),
+            }
+        }
+    }
+
+    impl Test {
+        pub fn first_name_male<'a>(&self) -> &'a str {
+            "John"
+        }
+    }
 
     #[test]
     fn numerify_works() {
@@ -89,5 +120,23 @@ mod tests {
 
         let result = test.random_element(&arr);
         assert!(arr.contains(&result));
+    }
+
+    #[test]
+    fn parse_works() {
+        let string = "{{ first_name_male }}";
+
+        let test = Test {};
+        let result = test.parse(string);
+        assert_eq!("John".to_string(), result)
+    }
+
+    #[test]
+    fn parse_works_without_leading_spaces() {
+        let string = "{{ first_name_male }}";
+
+        let test = Test {};
+        let result = test.parse(string);
+        assert_eq!("John".to_string(), result)
     }
 }
