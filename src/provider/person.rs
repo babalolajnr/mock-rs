@@ -6,51 +6,57 @@ pub struct Person {
     gender: Gender,
 }
 
-
 impl<'a> Person {
-    pub fn first_name(&self) -> &'a str {
+    fn first_name() -> &'a str {
         "John"
     }
-    
-    pub fn new() -> Self {
-        Self {
-            gender: Gender::Male,
-        }
-    }
 
-    pub fn title_format(&self) -> Vec<&'a str> {
+    fn title_format() -> Vec<&'a str> {
         vec!["{{title_male}}", "{{title_female}}"]
     }
 
-    pub fn first_name_format(&self) -> Vec<&'a str> {
+    fn first_name_format() -> Vec<&'a str> {
         vec!["{{first_name_male}}", "{{first_name_female}}"]
     }
 
-    pub fn male_name_formats(&self) -> Vec<&'a str> {
+    fn male_name_formats() -> Vec<&'a str> {
         vec!["{{first_name_male}} {{last_name}}"]
     }
 
-    pub fn female_name_formats(&self) -> Vec<&'a str> {
+    fn female_name_formats() -> Vec<&'a str> {
         vec!["{{first_name_female}} {{last_name}}"]
     }
 
-    pub fn first_name_male(&self) -> &'static str {
+    fn first_name_male() -> &'static str {
         "John"
     }
 
-    pub fn first_name_female(&self) -> &'static str {
+    fn first_name_female() -> &'static str {
         "Jane"
     }
 
-    pub fn last_name(&self) -> &'static str {
+    fn last_name() -> &'static str {
         "Doe"
     }
 
-    pub fn title_male(&self) -> Vec<&'a str> {
+    fn title_male() -> Vec<&'a str> {
         vec!["Mr.", "Dr.", "Prof."]
     }
 
-    pub fn title_female(&self) -> Vec<&'a str> {
+    fn title_female() -> Vec<&'a str> {
         vec!["Mrs.", "Ms.", "Miss", "Dr.", "Prof."]
     }
+
+    // pub fn name
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    // #[test]
+    // fn first_name() {
+    //     let person = Person::first_name()
+    // }
 }
