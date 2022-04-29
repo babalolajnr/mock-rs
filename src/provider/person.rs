@@ -1,9 +1,10 @@
+use super::base::Base;
+
 enum Gender {
     Male,
     Female,
 }
 pub struct Person {
-    gender: Gender,
 }
 
 impl<'a> Person {
@@ -47,8 +48,26 @@ impl<'a> Person {
         vec!["Mrs.", "Ms.", "Miss", "Dr.", "Prof."]
     }
 
-    // pub fn name
+    /// Get a random name 
+    pub fn name(&self, gender: Option<Gender>) -> &'a str{
+
+       let format =  match gender {
+            Some(Gender::Male) =>  Self::random_element(&self, &Self::male_name_formats()),
+            Some(Gender::Female) =>  Self::random_element(&self, &Self::female_name_formats()),
+            None => {
+                let merged = vec![];
+                merged.append(&mut Self::male_name_formats());
+                merged.append(&mut Self::female_name_formats());
+
+                Self::random_element(&self, &merged)
+            },
+        };
+
+        &self.parse(format)
+    }
 }
+
+impl Base for Person{}
 
 #[cfg(test)]
 mod tests {
