@@ -33,6 +33,10 @@ pub trait Base {
 
         random_string
     }
+
+    fn parse(&self, string: &str) -> String {
+        todo!()
+    }
 }
 
 #[cfg(test)]
@@ -55,7 +59,6 @@ mod tests {
     fn numerify_works_with_no_string() {
         let string = None;
         let test = Test {};
-
 
         let result = test.numerify(string);
         assert_eq!(result.len(), 4);
