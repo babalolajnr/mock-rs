@@ -48,7 +48,11 @@ impl<'a> Address<'a> {
     }
 }
 
-impl<'a> Base for Address<'a> {}
+impl<'a> Base for Address<'a> {
+    fn call_method(&self, string: &str) -> Result<String, crate::error::Errors> {
+        todo!()
+    }
+}
 
 #[cfg(test)]
 mod tests {
