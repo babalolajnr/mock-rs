@@ -39,18 +39,25 @@ pub trait Base {
 
     /// Replaces tokens ('{{ tokenName }}') with the result from the token method call
     fn parse(&self, string: &str) -> String {
+        
         let mut result = String::new();
 
-        let mut tokens = string.split("{{");
-        result.push_str(tokens.next().unwrap());
+        let remove_opening_braces: String = string.split("{{").collect::<String>();
+        let tokens = remove_opening_braces.split("}}").collect::<String>();
 
-        for token in tokens {
-            let token_name = token.split(" }}").next().unwrap();
-            let token_value = self.call_method(token_name.trim());
+        let methods: Vec<&str> = tokens.split(" ").collect::<Vec<&str>>();
+        let methods: Vec<&&str> = methods.iter().filter(|&x| x != &"").collect();
 
-            result.push_str(&token_value.unwrap());
+        for i in 0..methods.len() {
+            let token_value = self.call_method(methods[i]);
+
+            if i == methods.len() - 1 {
+                result.push_str(&(" ".to_string() + &token_value.unwrap()));
+            } else {
+                result.push_str(&token_value.unwrap());
+            }
         }
-
+        
         result
     }
 
@@ -66,6 +73,7 @@ mod tests {
         fn call_method(&self, string: &str) -> Result<String, Errors> {
             match string {
                 "first_name_male" => Ok(self.first_name_male().to_string()),
+                "last_name" => Ok(self.last_name().to_string()),
                 _ => Err(Errors::MethodNotFoundError),
             }
         }
@@ -74,6 +82,10 @@ mod tests {
     impl Test {
         pub fn first_name_male<'a>(&self) -> &'a str {
             "John"
+        }
+
+        pub fn last_name<'a>(&self) -> &'a str {
+            "Doe"
         }
     }
 
@@ -124,7 +136,7 @@ mod tests {
 
     #[test]
     fn parse_works() {
-        let string = "{{ first_name_male }}";
+        let string = "{{first_name_male}}";
 
         let test = Test {};
         let result = test.parse(string);
@@ -138,5 +150,23 @@ mod tests {
         let test = Test {};
         let result = test.parse(string);
         assert_eq!("John".to_string(), result)
+    }
+
+    #[test]
+    fn parse_multiple_format_works() {
+        let string = "{{ first_name_male }} {{ last_name }}";
+
+        let test = Test {};
+        let result = test.parse(string);
+        assert_eq!("John Doe".to_string(), result)
+    }
+    
+    #[test]
+    fn parse_multiple_format_works_without_spaces_in_between() {
+        let string = "{{ first_name_male }}{{ last_name }}";
+
+        let test = Test {};
+        let result = test.parse(string);
+        assert_eq!("John Doe".to_string(), result)
     }
 }
