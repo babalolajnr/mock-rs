@@ -84,6 +84,17 @@ impl<'a> Person {
             }
         }
     }
+
+    pub fn title(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.title_male(),
+            Some(Gender::Female) => self.title_female(),
+            None => {
+                let title = &self.title_format();
+                self.parse(&title)
+            }
+        }
+    }
 }
 
 impl Base for Person {
@@ -119,6 +130,12 @@ mod tests {
     #[test]
     fn first_name() {
         let person = Person::new().first_name(None);
+        assert!(person.len() > 0);
+    }
+
+    #[test]
+    fn title(){
+        let person = Person::new().title(None);
         assert!(person.len() > 0);
     }
 }
