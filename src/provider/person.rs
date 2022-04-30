@@ -9,10 +9,6 @@ pub enum Gender {
 pub struct Person {}
 
 impl<'a> Person {
-    fn first_name(&self) -> String {
-        "John".to_string()
-    }
-
     pub fn new() -> Self {
         Self {}
     }
@@ -74,6 +70,20 @@ impl<'a> Person {
 
         self.parse(&format)
     }
+
+    /// Get random first name
+    pub fn first_name(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.first_name_male(),
+            Some(Gender::Female) => self.first_name_female(),
+            None => {
+                let male_name_format = &self.male_name_formats();
+                let female_name_format = &self.female_name_formats();
+                let merged = vec![male_name_format, female_name_format];
+                self.parse(&self.random_element(&merged).to_string())
+            }
+        }
+    }
 }
 
 impl Base for Person {
@@ -103,6 +113,12 @@ mod tests {
     #[test]
     fn name_with_gender_some_option_works() {
         let person = Person::new().name(Some(Gender::Female));
+        assert!(person.len() > 0);
+    }
+
+    #[test]
+    fn first_name() {
+        let person = Person::new().first_name(None);
         assert!(person.len() > 0);
     }
 }
