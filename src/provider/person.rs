@@ -13,25 +13,28 @@ impl<'a> Person {
         "John".to_string()
     }
 
-    pub fn new() -> Self{
-        Self{}
+    pub fn new() -> Self {
+        Self {}
     }
 
     fn title_format(&self) -> String {
-        self.random_element(&vec!["{{title_male}}", "{{title_female}}"]).to_string()
+        self.random_element(&vec!["{{title_male}}", "{{title_female}}"])
+            .to_string()
     }
 
     fn first_name_format(&self) -> String {
-        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"]).to_string()
+        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
+            .to_string()
     }
 
     fn male_name_formats(&self) -> String {
-        self.random_element(&vec!["{{first_name_male}} {{last_name}}"]).to_string()
-
+        self.random_element(&vec!["{{first_name_male}} {{last_name}}"])
+            .to_string()
     }
 
     fn female_name_formats(&self) -> String {
-        self.random_element(&vec!["{{first_name_female}} {{last_name}}"]).to_string()
+        self.random_element(&vec!["{{first_name_female}} {{last_name}}"])
+            .to_string()
     }
 
     fn first_name_male(&self) -> String {
@@ -47,12 +50,13 @@ impl<'a> Person {
     }
 
     fn title_male(&self) -> String {
-        self.random_element(&vec!["Mr.", "Dr.", "Prof."]).to_string()
+        self.random_element(&vec!["Mr.", "Dr.", "Prof."])
+            .to_string()
     }
 
     fn title_female(&self) -> String {
-        self.random_element(&vec!["Mrs.", "Ms.", "Miss", "Dr.", "Prof."]).to_string()
-
+        self.random_element(&vec!["Mrs.", "Ms.", "Miss", "Dr.", "Prof."])
+            .to_string()
     }
 
     /// Get a random name
@@ -74,7 +78,6 @@ impl<'a> Person {
 
 impl Base for Person {
     fn call_method(&self, string: &str) -> Result<String, Errors> {
-        println!("{}", string);
         match string {
             "first_name_male" => Ok(self.first_name_male().to_string()),
             "first_name_female" => Ok(self.first_name_female().to_string()),
@@ -95,7 +98,11 @@ mod tests {
     fn name() {
         let person = Person::new().name(None);
         assert!(person.len() > 0);
+    }
 
-        println!("{}", person);
+    #[test]
+    fn name_with_gender_some_option_works() {
+        let person = Person::new().name(Some(Gender::Female));
+        assert!(person.len() > 0);
     }
 }
