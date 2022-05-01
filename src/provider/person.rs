@@ -12,23 +12,30 @@ impl<'a> Person {
     pub fn new() -> Self {
         Self {}
     }
+}
 
-    fn title_format(&self) -> String {
-        self.random_element(&vec!["{{title_male}}", "{{title_female}}"])
-            .to_string()
+impl Base for Person {
+    fn call_method(&self, string: &str) -> Result<String, Errors> {
+        match string {
+            "first_name_male" => Ok(self.first_name_male().to_string()),
+            "first_name_female" => Ok(self.first_name_female().to_string()),
+            "last_name" => Ok(self.last_name().to_string()),
+            "title_male" => Ok(self.title_male().to_string()),
+            "title_female" => Ok(self.title_female().to_string()),
+            _ => Err(Errors::MethodNotFoundError),
+        }
     }
+}
 
-    fn first_name_format(&self) -> String {
-        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
-            .to_string()
-    }
+impl PersonTrait for Person {
+   
 
-    fn male_name_formats(&self) -> String {
+    fn male_name_format(&self) -> String {
         self.random_element(&vec!["{{first_name_male}} {{last_name}}"])
             .to_string()
     }
 
-    fn female_name_formats(&self) -> String {
+    fn female_name_format(&self) -> String {
         self.random_element(&vec!["{{first_name_female}} {{last_name}}"])
             .to_string()
     }
@@ -45,8 +52,23 @@ impl<'a> Person {
         "Doe".to_string()
     }
 
-    fn title_male(&self) -> String {
-        self.random_element(&vec!["Mr.", "Dr.", "Prof."])
+   
+}
+
+pub trait PersonTrait: Base {
+    fn last_name(&self) -> String;
+    fn first_name_female(&self) -> String;
+    fn first_name_male(&self) -> String;
+    fn female_name_format(&self) -> String;
+    fn male_name_format(&self) -> String;
+
+    fn first_name_format(&self) -> String {
+        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
+            .to_string()
+    }
+
+    fn title_format(&self) -> String {
+        self.random_element(&vec!["{{title_male}}", "{{title_female}}"])
             .to_string()
     }
 
@@ -55,14 +77,19 @@ impl<'a> Person {
             .to_string()
     }
 
+    fn title_male(&self) -> String {
+        self.random_element(&vec!["Mr.", "Dr.", "Prof."])
+            .to_string()
+    }
+
     /// Get a random name
-    pub fn name(&self, gender: Option<Gender>) -> String {
+    fn name(&self, gender: Option<Gender>) -> String {
         let format = match gender {
-            Some(Gender::Male) => self.male_name_formats(),
-            Some(Gender::Female) => self.female_name_formats(),
+            Some(Gender::Male) => self.male_name_format(),
+            Some(Gender::Female) => self.female_name_format(),
             None => {
-                let male_name_format = &self.male_name_formats();
-                let female_name_format = &self.female_name_formats();
+                let male_name_format = &self.male_name_format();
+                let female_name_format = &self.female_name_format();
                 let merged = vec![male_name_format, female_name_format];
                 self.random_element(&merged).to_string()
             }
@@ -72,20 +99,20 @@ impl<'a> Person {
     }
 
     /// Get random first name
-    pub fn first_name(&self, gender: Option<Gender>) -> String {
+    fn first_name(&self, gender: Option<Gender>) -> String {
         match gender {
             Some(Gender::Male) => self.first_name_male(),
             Some(Gender::Female) => self.first_name_female(),
             None => {
-                let male_name_format = &self.male_name_formats();
-                let female_name_format = &self.female_name_formats();
+                let male_name_format = &self.male_name_format();
+                let female_name_format = &self.female_name_format();
                 let merged = vec![male_name_format, female_name_format];
                 self.parse(&self.random_element(&merged).to_string())
             }
         }
     }
 
-    pub fn title(&self, gender: Option<Gender>) -> String {
+    fn title(&self, gender: Option<Gender>) -> String {
         match gender {
             Some(Gender::Male) => self.title_male(),
             Some(Gender::Female) => self.title_female(),
@@ -93,19 +120,6 @@ impl<'a> Person {
                 let title = &self.title_format();
                 self.parse(&title)
             }
-        }
-    }
-}
-
-impl Base for Person {
-    fn call_method(&self, string: &str) -> Result<String, Errors> {
-        match string {
-            "first_name_male" => Ok(self.first_name_male().to_string()),
-            "first_name_female" => Ok(self.first_name_female().to_string()),
-            "last_name" => Ok(self.last_name().to_string()),
-            "title_male" => Ok(self.title_male().to_string()),
-            "title_female" => Ok(self.title_female().to_string()),
-            _ => Err(Errors::MethodNotFoundError),
         }
     }
 }
@@ -134,7 +148,7 @@ mod tests {
     }
 
     #[test]
-    fn title(){
+    fn title() {
         let person = Person::new().title(None);
         assert!(person.len() > 0);
     }
