@@ -12,8 +12,8 @@ impl<'a> Person {
     pub fn new() -> Person {
         Person {}
     }
-    fn first_name_male() -> Vec<&'a str> {
-        vec![
+    fn first_name_male(&self) -> String {
+        self.random_element(&vec![
             "Aaron",
             "Abdiel",
             "Abdul",
@@ -1582,11 +1582,12 @@ impl<'a> Person {
             "Zane",
             "Zechariah",
             "Zion",
-        ]
+        ])
+        .to_string()
     }
 
-    fn first_name_female() -> Vec<&'a str> {
-        vec![
+    fn first_name_female(&self) -> String {
+        self.random_element(&vec![
             "Aaliyah",
             "Abagail",
             "Abbey",
@@ -3026,11 +3027,12 @@ impl<'a> Person {
             "Zola",
             "Zora",
             "Zula",
-        ]
+        ])
+        .to_string()
     }
 
-    fn last_name() -> Vec<&'a str> {
-        vec![
+    fn last_name(&self) -> String {
+        self.random_element(&vec![
             "Abbott",
             "Abernathy",
             "Abshire",
@@ -3504,17 +3506,12 @@ impl<'a> Person {
             "Ziemann",
             "Zieme",
             "Zulauf",
-        ]
+        ])
+        .to_string()
     }
 
-    fn suffix() -> Vec<&'a str> {
-        vec![
-            "Jr.", "Sr.", "I", "II", "III", "IV", "V", "MD", "DDS", "PhD", "DVM",
-        ]
-    }
-
-    fn male_name_formats() -> Vec<&'a str> {
-        vec![
+    fn male_name_formats(&self) -> String {
+        self.random_element(&vec![
             "{{first_name_male}} {{last_name}}",
             "{{first_name_male}} {{last_name}}",
             "{{first_name_male}} {{last_name}}",
@@ -3522,11 +3519,12 @@ impl<'a> Person {
             "{{title_male}} {{first_name_male}} {{last_name}}",
             "{{first_name_male}} {{last_name}} {{suffix}}",
             "{{title_male}} {{first_name_male}} {{last_name}} {{suffix}}",
-        ]
+        ])
+        .to_string()
     }
 
-    fn female_name_formats() -> Vec<&'a str> {
-        vec![
+    fn female_name_formats(&self) -> String {
+        self.random_element(&vec![
             "{{first_name_female}} {{last_name}}",
             "{{first_name_female}} {{last_name}}",
             "{{first_name_female}} {{last_name}}",
@@ -3534,10 +3532,18 @@ impl<'a> Person {
             "{{title_female}} {{first_name_female}} {{last_name}}",
             "{{first_name_female}} {{last_name}} {{suffix}}",
             "{{title_female}} {{first_name_female}} {{last_name}} {{suffix}}",
-        ]
+        ])
+        .to_string()
     }
 
-    fn suffix(&'a self) -> &'a str {
-        self.random_element(&self.suffix)
+    pub fn suffix(&self) -> String {
+        self.random_element(&vec![
+            "Jr.", "Sr.", "I", "II", "III", "IV", "V", "MD", "DDS", "PhD", "DVM",
+        ])
+        .to_string()
     }
+
+    // pub fn ssn() -> &'a str {
+
+    // }
 }
