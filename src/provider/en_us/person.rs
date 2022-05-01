@@ -3512,23 +3512,23 @@ impl<'a> Person<'a> {
             ],
 
             male_name_formats: vec![
-                "{{first_nameMale}} {{last_name}}",
-                "{{first_nameMale}} {{last_name}}",
-                "{{first_nameMale}} {{last_name}}",
-                "{{first_nameMale}} {{last_name}}",
-                "{{titleMale}} {{first_nameMale}} {{last_name}}",
-                "{{first_nameMale}} {{last_name}} {{suffix}}",
-                "{{titleMale}} {{first_nameMale}} {{last_name}} {{suffix}}",
+                "{{first_name_male}} {{last_name}}",
+                "{{first_name_male}} {{last_name}}",
+                "{{first_name_male}} {{last_name}}",
+                "{{first_name_male}} {{last_name}}",
+                "{{title_male}} {{first_name_male}} {{last_name}}",
+                "{{first_name_male}} {{last_name}} {{suffix}}",
+                "{{title_male}} {{first_name_male}} {{last_name}} {{suffix}}",
             ],
 
             female_name_formats: vec![
-                "{{first_nameFemale}} {{last_name}}",
-                "{{first_nameFemale}} {{last_name}}",
-                "{{first_nameFemale}} {{last_name}}",
-                "{{first_nameFemale}} {{last_name}}",
-                "{{titleFemale}} {{first_nameFemale}} {{last_name}}",
-                "{{first_nameFemale}} {{last_name}} {{suffix}}",
-                "{{titleFemale}} {{first_nameFemale}} {{last_name}} {{suffix}}",
+                "{{first_name_female}} {{last_name}}",
+                "{{first_name_female}} {{last_name}}",
+                "{{first_name_female}} {{last_name}}",
+                "{{first_name_female}} {{last_name}}",
+                "{{title_female}} {{first_name_female}} {{last_name}}",
+                "{{first_name_female}} {{last_name}} {{suffix}}",
+                "{{title_female}} {{first_name_female}} {{last_name}} {{suffix}}",
             ],
         }
     }
