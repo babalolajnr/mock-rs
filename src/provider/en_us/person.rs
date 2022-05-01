@@ -3539,8 +3539,6 @@ impl<'a> Person {
         Person {}
     }
 
- 
-
     pub fn suffix(&self) -> String {
         self.random_element(&vec![
             "Jr.", "Sr.", "I", "II", "III", "IV", "V", "MD", "DDS", "PhD", "DVM",

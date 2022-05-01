@@ -28,7 +28,6 @@ impl Base for Person {
 }
 
 impl PersonTrait for Person {
-   
 
     fn male_name_format(&self) -> String {
         self.random_element(&vec!["{{first_name_male}} {{last_name}}"])
@@ -51,8 +50,6 @@ impl PersonTrait for Person {
     fn last_name(&self) -> String {
         "Doe".to_string()
     }
-
-   
 }
 
 pub trait PersonTrait: Base {
