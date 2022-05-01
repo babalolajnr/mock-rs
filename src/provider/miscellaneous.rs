@@ -5,7 +5,7 @@ use rand::Rng;
 pub struct Miscellaneous{}
 
 impl Miscellaneous{
-    
+
     /// Return a boolean, true or false.
     ///
     /// chance_of_getting_true between 0 (always get false) and 100 (always get true)
@@ -33,4 +33,18 @@ impl Miscellaneous{
     }
 }
 
-// #[cfg(test)]
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+    #[test]
+    fn boolean() {
+        assert_eq!(false, Miscellaneous::boolean(Some(0)));
+        assert_eq!(true, Miscellaneous::boolean(Some(100)));
+    }
+
+    #[test]
+    fn number_between() {
+        assert!(Miscellaneous::number_between(Some(0), Some(50000)) <= 50000);
+    }
+}
