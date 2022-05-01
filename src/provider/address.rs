@@ -1,56 +1,67 @@
+use crate::error::Errors;
+
 use super::base::Base;
 
 #[derive(Debug)]
-pub struct Address<'a> {
-    city_suffix: Vec<&'a str>,
-    street_suffix: Vec<&'a str>,
-    city_formats: Vec<&'a str>,
-    street_name_formats: Vec<&'a str>,
-    street_address_formats: Vec<&'a str>,
-    address_formats: Vec<&'a str>,
-    building_number: Vec<&'a str>,
-    post_code: Vec<&'a str>,
-    country: Vec<&'a str>,
-}
+pub struct Address {}
 
-impl<'a> Address<'a> {
+impl Address {
     pub fn new() -> Self {
-        Self {
-            city_suffix: vec!["Ville"],
-            street_suffix: vec!["Street"],
-            city_formats: vec!["{{first_name}}{{city_suffix}}"],
-            street_name_formats: vec!["{{last_name}} {{street_suffix}}"],
-            street_address_formats: vec!["{{building_number}} {{street_name}}"],
-            address_formats: vec!["{{street_address}} {{postcode}} {{city}}"],
-            building_number: vec!["%#"],
-            post_code: vec!["#####"],
-            country: vec![],
-        }
+        Self {}
     }
 
     /// Get random city suffix
-    fn city_suffix(&'a self) -> &'a str {
-        self.random_element(&self.city_suffix)
+    fn city_suffix(&self) -> String {
+        self.random_element(&vec!["Ville"]).to_string()
     }
 
     /// Get random street suffix
-    fn street_suffix(&'a self) -> &'a str {
-        self.random_element(&self.street_suffix)
+    fn street_suffix(&self) -> String {
+        self.random_element(&vec!["Street"]).to_string()
     }
 
     /// Get building number
-    fn building_number(&'a self) -> String {
-        self.numerify(Some(self.random_element(&self.building_number)))
+    fn building_number(&self) -> String {
+        self.numerify(Some(self.random_element(&vec!["%#"]))).to_string()
     }
 
-    fn city() -> String {
-        panic!("Use the")
+    fn street_name_format(&self) -> String {
+        self.random_element(&vec!["{{last_name}} {{street_suffix}}"]).to_string()
+    }
+
+    fn address_format(&self) -> String {
+        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"]).to_string()
+    }
+
+    fn post_code(&self) -> String {
+        self.numerify(Some(self.random_element(&vec!["%####"])))
+    }
+
+    fn city_format(&self) -> String {
+        self.random_element(&vec!["{{first_name}}{{city_suffix}}"]).to_string()
+    }
+
+    // fn country(&self) -> String {
+    //     self.random_element(&vec![]).to_string()
+    // }
+
+    fn city(&self) -> String {
+        let format = &self.city_format();
+
+        self.parse(format.as_str())
     }
 }
 
-impl<'a> Base for Address<'a> {
+impl Base for Address {
     fn call_method(&self, string: &str) -> Result<String, crate::error::Errors> {
-        todo!()
+        match string {
+            "city_suffix" => Ok(self.city_suffix()),
+            "street_suffix" => Ok(self.street_suffix()),
+            "building_number" => Ok(self.building_number()),
+            "post_code" => Ok(self.post_code()),
+            "city_format" => Ok(self.city_format()),
+            _ =>Err(Errors::MethodNotFoundError)
+        }
     }
 }
 
