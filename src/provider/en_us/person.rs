@@ -1,4 +1,4 @@
-use crate::provider::base::Base;
+use crate::provider::{base::Base, miscellaneous::Miscellaneous, person::PersonTrait};
 
 pub struct Person {}
 
@@ -8,10 +8,7 @@ impl Base for Person {
     }
 }
 
-impl<'a> Person {
-    pub fn new() -> Person {
-        Person {}
-    }
+impl PersonTrait for Person {
     fn first_name_male(&self) -> String {
         self.random_element(&vec![
             "Aaron",
@@ -3510,7 +3507,7 @@ impl<'a> Person {
         .to_string()
     }
 
-    fn male_name_formats(&self) -> String {
+    fn male_name_format(&self) -> String {
         self.random_element(&vec![
             "{{first_name_male}} {{last_name}}",
             "{{first_name_male}} {{last_name}}",
@@ -3523,7 +3520,7 @@ impl<'a> Person {
         .to_string()
     }
 
-    fn female_name_formats(&self) -> String {
+    fn female_name_format(&self) -> String {
         self.random_element(&vec![
             "{{first_name_female}} {{last_name}}",
             "{{first_name_female}} {{last_name}}",
@@ -3535,6 +3532,14 @@ impl<'a> Person {
         ])
         .to_string()
     }
+}
+
+impl<'a> Person {
+    pub fn new() -> Person {
+        Person {}
+    }
+
+ 
 
     pub fn suffix(&self) -> String {
         self.random_element(&vec![
@@ -3543,7 +3548,31 @@ impl<'a> Person {
         .to_string()
     }
 
-    // pub fn ssn() -> &'a str {
+    /// example '123-45-6789'
+    pub fn ssn(&self) -> String {
+        let area = if Miscellaneous::boolean(None) {
+            Miscellaneous::number_between(Some(1), Some(165))
+        } else {
+            Miscellaneous::number_between(Some(667), Some(899))
+        };
 
-    // }
+        let group = Miscellaneous::number_between(Some(1), Some(99));
+        let serial = Miscellaneous::number_between(Some(1), Some(99));
+
+        format!("{:03}-{:02}-{:04}", area, group, serial)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn ssn() {
+        let ssn = Person::new().ssn();
+
+        assert_eq!(ssn.len(), 11);
+        assert_eq!(ssn.chars().nth(3).unwrap(), '-');
+        assert_eq!(ssn.chars().nth(6).unwrap(), '-');
+    }
 }
