@@ -1,6 +1,6 @@
 use crate::error::Errors;
 
-use super::base::Base;
+use super::{base::Base, shared_formats::SharedFormats};
 
 pub enum Gender {
     Male,
@@ -28,36 +28,16 @@ impl Base for Person {
 }
 
 impl PersonTrait for Person {
-
-    fn male_name_format(&self) -> String {
-        self.random_element(&vec!["{{first_name_male}} {{last_name}}"])
-            .to_string()
-    }
-
-    fn female_name_format(&self) -> String {
-        self.random_element(&vec!["{{first_name_female}} {{last_name}}"])
-            .to_string()
-    }
-
-    fn first_name_male(&self) -> String {
-        "John".to_string()
-    }
-
-    fn first_name_female(&self) -> String {
-        "Jane".to_string()
-    }
-
     fn last_name(&self) -> String {
         "Doe".to_string()
     }
 }
 
-pub trait PersonTrait: Base {
+impl SharedFormats for Person {
+}
+
+pub trait PersonTrait: Base + SharedFormats {
     fn last_name(&self) -> String;
-    fn first_name_female(&self) -> String;
-    fn first_name_male(&self) -> String;
-    fn female_name_format(&self) -> String;
-    fn male_name_format(&self) -> String;
 
     fn first_name_format(&self) -> String {
         self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
@@ -93,20 +73,6 @@ pub trait PersonTrait: Base {
         };
 
         self.parse(&format)
-    }
-
-    /// Get random first name
-    fn first_name(&self, gender: Option<Gender>) -> String {
-        match gender {
-            Some(Gender::Male) => self.first_name_male(),
-            Some(Gender::Female) => self.first_name_female(),
-            None => {
-                let male_name_format = &self.male_name_format();
-                let female_name_format = &self.female_name_format();
-                let merged = vec![male_name_format, female_name_format];
-                self.parse(&self.random_element(&merged).to_string())
-            }
-        }
     }
 
     fn title(&self, gender: Option<Gender>) -> String {
