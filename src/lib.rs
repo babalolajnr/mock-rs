@@ -1,13 +1,11 @@
-pub mod error;
+mod error;
 mod provider;
 
 #[cfg(test)]
 mod tests {
     use crate::provider::{
         en_us::person::Person as en_us_person,
-        person::{self, PersonTrait},
-        address,
-        shared_formats::SharedFormats,
+        person::{self, Attributes},
     };
     
     #[test]
