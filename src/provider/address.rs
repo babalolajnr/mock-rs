@@ -59,7 +59,6 @@ impl Base for Address {
             "street_suffix" => Ok(self.street_suffix()),
             "building_number" => Ok(self.building_number()),
             "post_code" => Ok(self.post_code()),
-            "city_format" => Ok(self.city_format()),
             _ =>Err(Errors::MethodNotFoundError)
         }
     }
@@ -87,6 +86,13 @@ mod tests {
     fn building_number_works() {
         let address = Address::new();
         let result = address.building_number();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn city() {
+        let address = Address::new();
+        let result = address.city();
         assert!(result.len() > 0);
     }
 }
