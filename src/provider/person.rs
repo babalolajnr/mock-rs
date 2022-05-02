@@ -1,6 +1,6 @@
 use crate::error::Errors;
 
-use super::{base::Base, shared_formats::SharedFormats};
+use super::base::Base;
 
 pub enum Gender {
     Male,
@@ -27,26 +27,11 @@ impl Base for Person {
     }
 }
 
-impl PersonTrait for Person {
+impl Attributes for Person {}
+
+pub trait Attributes: Base + Formats {
     fn last_name(&self) -> String {
         "Doe".to_string()
-    }
-}
-
-impl SharedFormats for Person {
-}
-
-pub trait PersonTrait: Base + SharedFormats {
-    fn last_name(&self) -> String;
-
-    fn first_name_format(&self) -> String {
-        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
-            .to_string()
-    }
-
-    fn title_format(&self) -> String {
-        self.random_element(&vec!["{{title_male}}", "{{title_female}}"])
-            .to_string()
     }
 
     fn title_female(&self) -> String {
@@ -84,6 +69,52 @@ pub trait PersonTrait: Base + SharedFormats {
                 self.parse(&title)
             }
         }
+    }
+
+    fn first_name_male(&self) -> String {
+        "John".to_string()
+    }
+
+    fn first_name_female(&self) -> String {
+        "Jane".to_string()
+    }
+
+    /// Get random first name
+    fn first_name(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.first_name_male(),
+            Some(Gender::Female) => self.first_name_female(),
+            None => {
+                let male_name_format = &self.first_name_male();
+                let female_name_format = &self.first_name_female();
+                let merged = vec![male_name_format, female_name_format];
+                self.random_element(&merged).to_string()
+            }
+        }
+    }
+}
+
+impl Formats for Person {}
+
+pub trait Formats: Base {
+    fn first_name_format(&self) -> String {
+        self.random_element(&vec!["{{first_name_male}}", "{{first_name_female}}"])
+            .to_string()
+    }
+
+    fn title_format(&self) -> String {
+        self.random_element(&vec!["{{title_male}}", "{{title_female}}"])
+            .to_string()
+    }
+
+    fn male_name_format(&self) -> String {
+        self.random_element(&vec!["{{first_name_male}} {{last_name}}"])
+            .to_string()
+    }
+
+    fn female_name_format(&self) -> String {
+        self.random_element(&vec!["{{first_name_female}} {{last_name}}"])
+            .to_string()
     }
 }
 
