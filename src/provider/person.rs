@@ -1,5 +1,3 @@
-use crate::error::Errors;
-
 use super::base::Base;
 
 pub enum Gender {
@@ -15,14 +13,14 @@ impl<'a> Person {
 }
 
 impl Base for Person {
-    fn call_method(&self, string: &str) -> Result<String, Errors> {
+    fn call_method(&self, string: &str) -> Result<String, String> {
         match string {
             "first_name_male" => Ok(self.first_name_male().to_string()),
             "first_name_female" => Ok(self.first_name_female().to_string()),
             "last_name" => Ok(self.last_name().to_string()),
             "title_male" => Ok(self.title_male().to_string()),
             "title_female" => Ok(self.title_female().to_string()),
-            _ => Err(Errors::MethodNotFoundError),
+            _ => Err(format!("Method '{}' not found", string)),
         }
     }
 }

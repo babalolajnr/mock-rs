@@ -1,7 +1,5 @@
 use rand::{thread_rng, Rng};
 
-use crate::error::Errors;
-
 pub trait Base {
     /// Returns a index from array/vector
     fn generate_random_index<T>(&self, arr: &[T]) -> usize {
@@ -61,7 +59,7 @@ pub trait Base {
         result
     }
 
-    fn call_method(&self, string: &str) -> Result<String, Errors>;
+    fn call_method(&self, string: &str) -> Result<String, String>;
 }
 
 #[cfg(test)]
@@ -70,11 +68,11 @@ mod tests {
 
     struct Test;
     impl Base for Test {
-        fn call_method(&self, string: &str) -> Result<String, Errors> {
+        fn call_method(&self, string: &str) -> Result<String, String> {
             match string {
                 "first_name_male" => Ok(self.first_name_male().to_string()),
                 "last_name" => Ok(self.last_name().to_string()),
-                _ => Err(Errors::MethodNotFoundError),
+                _ => Err(format!("Method '{}' not found", string)),
             }
         }
     }

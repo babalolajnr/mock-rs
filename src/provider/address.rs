@@ -1,4 +1,3 @@
-use crate::error::Errors;
 
 use super::{
     base::Base,
@@ -31,6 +30,16 @@ trait Formats: Base {
         self.random_element(&vec!["{{first_name}} {{city_suffix}}"])
             .to_string()
     }
+
+    /// Get building number
+    fn building_number(&self) -> String {
+        self.numerify(Some(self.random_element(&vec!["%#"])))
+            .to_string()
+    }
+
+    fn post_code_format(&self) -> String {
+        self.numerify(Some(self.random_element(&vec!["%####"])))
+    }
 }
 
 trait Attributes: Base + Formats {
@@ -44,15 +53,6 @@ trait Attributes: Base + Formats {
         self.random_element(&vec!["Street"]).to_string()
     }
 
-    /// Get building number
-    fn building_number(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["%#"])))
-            .to_string()
-    }
-
-    fn post_code(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["%####"])))
-    }
     fn city(&self) -> String {
         let format = &self.city_format();
         self.parse(format.as_str())
@@ -62,19 +62,30 @@ trait Attributes: Base + Formats {
         let format = &self.street_name_format();
         self.parse(format.as_str())
     }
+
+    fn street_address(&self) -> String {
+        let format = &self.address_format();
+        self.parse(format.as_str())
+    }
+
+    fn post_code(&self) -> String {
+        todo!()
+    }
 }
 
 impl Attributes for Address {}
 
 impl Base for Address {
-    fn call_method(&self, string: &str) -> Result<String, crate::error::Errors> {
+    fn call_method(&self, string: &str) -> Result<String, String> {
         match string {
             "city_suffix" => Ok(self.city_suffix()),
             "street_suffix" => Ok(self.street_suffix()),
             "building_number" => Ok(self.building_number()),
             "post_code" => Ok(self.post_code()),
+            "street_name" => Ok(self.street_name()),
             "first_name" => Ok(self.first_name(None)),
-            _ => Err(Errors::MethodNotFoundError),
+            "last_name" => Ok(self.last_name()),
+            _ => Err(format!("Method '{}' not found", string)),
         }
     }
 }
@@ -111,6 +122,14 @@ mod tests {
     fn city() {
         let address = Address::new();
         let result = address.city();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn street_name() {
+        let address = Address::new();
+        let result = address.street_name();
+        println!("{}", result);
         assert!(result.len() > 0);
     }
 }
