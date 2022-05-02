@@ -1,6 +1,9 @@
-use crate::{error::Errors, provider::person::Gender};
+use crate::error::Errors;
 
-use super::{base::Base, shared_formats::SharedFormats};
+use super::{
+    base::Base,
+    person::{Attributes as PersonAttributes, Formats as PersonFormats},
+};
 
 #[derive(Debug)]
 pub struct Address {}
@@ -9,7 +12,28 @@ impl Address {
     pub fn new() -> Self {
         Self {}
     }
+}
 
+impl Formats for Address {}
+
+trait Formats: Base {
+    fn street_name_format(&self) -> String {
+        self.random_element(&vec!["{{last_name}} {{street_suffix}}"])
+            .to_string()
+    }
+
+    fn address_format(&self) -> String {
+        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"])
+            .to_string()
+    }
+
+    fn city_format(&self) -> String {
+        self.random_element(&vec!["{{first_name}} {{city_suffix}}"])
+            .to_string()
+    }
+}
+
+trait Attributes: Base + Formats {
     /// Get random city suffix
     fn city_suffix(&self) -> String {
         self.random_element(&vec!["Ville"]).to_string()
@@ -26,34 +50,21 @@ impl Address {
             .to_string()
     }
 
-    fn street_name_format(&self) -> String {
-        self.random_element(&vec!["{{last_name}} {{street_suffix}}"])
-            .to_string()
-    }
-
-    fn address_format(&self) -> String {
-        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"])
-            .to_string()
-    }
-
     fn post_code(&self) -> String {
         self.numerify(Some(self.random_element(&vec!["%####"])))
     }
-
-    fn city_format(&self) -> String {
-        self.random_element(&vec!["{{first_name}} {{city_suffix}}"])
-            .to_string()
-    }
-
-    // fn country(&self) -> String {
-    //     self.random_element(&vec![]).to_string()
-    // }
-
     fn city(&self) -> String {
         let format = &self.city_format();
         self.parse(format.as_str())
     }
+
+    fn street_name(&self) -> String {
+        let format = &self.street_name_format();
+        self.parse(format.as_str())
+    }
 }
+
+impl Attributes for Address {}
 
 impl Base for Address {
     fn call_method(&self, string: &str) -> Result<String, crate::error::Errors> {
@@ -68,7 +79,8 @@ impl Base for Address {
     }
 }
 
-impl SharedFormats for Address {}
+impl PersonAttributes for Address {}
+impl PersonFormats for Address {}
 
 #[cfg(test)]
 mod tests {
