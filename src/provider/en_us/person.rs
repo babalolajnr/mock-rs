@@ -1,9 +1,6 @@
 use crate::{
     error::Errors,
-    provider::{
-        base::Base, miscellaneous::Miscellaneous, person::PersonTrait,
-        shared_formats::SharedFormats,
-    },
+    provider::{base::Base, miscellaneous::Miscellaneous, person::{Formats, Attributes}},
 };
 
 pub struct Person {}
@@ -21,7 +18,7 @@ impl Base for Person {
     }
 }
 
-impl SharedFormats for Person {
+impl Attributes for Person {
     fn first_name_male(&self) -> String {
         self.random_element(&vec![
             "Aaron",
@@ -3041,34 +3038,6 @@ impl SharedFormats for Person {
         .to_string()
     }
 
-    fn male_name_format(&self) -> String {
-        self.random_element(&vec![
-            "{{first_name_male}} {{last_name}}",
-            "{{first_name_male}} {{last_name}}",
-            "{{first_name_male}} {{last_name}}",
-            "{{first_name_male}} {{last_name}}",
-            "{{title_male}} {{first_name_male}} {{last_name}}",
-            "{{first_name_male}} {{last_name}} {{suffix}}",
-            "{{title_male}} {{first_name_male}} {{last_name}} {{suffix}}",
-        ])
-        .to_string()
-    }
-
-    fn female_name_format(&self) -> String {
-        self.random_element(&vec![
-            "{{first_name_female}} {{last_name}}",
-            "{{first_name_female}} {{last_name}}",
-            "{{first_name_female}} {{last_name}}",
-            "{{first_name_female}} {{last_name}}",
-            "{{title_female}} {{first_name_female}} {{last_name}}",
-            "{{first_name_female}} {{last_name}} {{suffix}}",
-            "{{title_female}} {{first_name_female}} {{last_name}} {{suffix}}",
-        ])
-        .to_string()
-    }
-}
-
-impl PersonTrait for Person {
     fn last_name(&self) -> String {
         self.random_element(&vec![
             "Abbott",
@@ -3544,6 +3513,34 @@ impl PersonTrait for Person {
             "Ziemann",
             "Zieme",
             "Zulauf",
+        ])
+        .to_string()
+    }
+}
+
+impl Formats for Person {
+    fn male_name_format(&self) -> String {
+        self.random_element(&vec![
+            "{{first_name_male}} {{last_name}}",
+            "{{first_name_male}} {{last_name}}",
+            "{{first_name_male}} {{last_name}}",
+            "{{first_name_male}} {{last_name}}",
+            "{{title_male}} {{first_name_male}} {{last_name}}",
+            "{{first_name_male}} {{last_name}} {{suffix}}",
+            "{{title_male}} {{first_name_male}} {{last_name}} {{suffix}}",
+        ])
+        .to_string()
+    }
+
+    fn female_name_format(&self) -> String {
+        self.random_element(&vec![
+            "{{first_name_female}} {{last_name}}",
+            "{{first_name_female}} {{last_name}}",
+            "{{first_name_female}} {{last_name}}",
+            "{{first_name_female}} {{last_name}}",
+            "{{title_female}} {{first_name_female}} {{last_name}}",
+            "{{first_name_female}} {{last_name}} {{suffix}}",
+            "{{title_female}} {{first_name_female}} {{last_name}} {{suffix}}",
         ])
         .to_string()
     }
