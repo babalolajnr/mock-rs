@@ -51,7 +51,7 @@ pub trait Base {
         for i in 0..methods.len() {
             let token_value = self.call_method(methods[i]);
 
-            if i == methods.len() - 1 {
+            if i == methods.len() - 1 && methods.len() > 1 {
                 result.push_str(&(" ".to_string() + &token_value.unwrap()));
             } else {
                 result.push_str(&token_value.unwrap());
