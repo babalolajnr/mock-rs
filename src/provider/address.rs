@@ -1,6 +1,6 @@
-use crate::error::Errors;
+use crate::{error::Errors, provider::person::Gender};
 
-use super::base::Base;
+use super::{base::Base, shared_formats::SharedFormats};
 
 #[derive(Debug)]
 pub struct Address {}
@@ -22,15 +22,18 @@ impl Address {
 
     /// Get building number
     fn building_number(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["%#"]))).to_string()
+        self.numerify(Some(self.random_element(&vec!["%#"])))
+            .to_string()
     }
 
     fn street_name_format(&self) -> String {
-        self.random_element(&vec!["{{last_name}} {{street_suffix}}"]).to_string()
+        self.random_element(&vec!["{{last_name}} {{street_suffix}}"])
+            .to_string()
     }
 
     fn address_format(&self) -> String {
-        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"]).to_string()
+        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"])
+            .to_string()
     }
 
     fn post_code(&self) -> String {
@@ -38,7 +41,8 @@ impl Address {
     }
 
     fn city_format(&self) -> String {
-        self.random_element(&vec!["{{first_name}}{{city_suffix}}"]).to_string()
+        self.random_element(&vec!["{{first_name}} {{city_suffix}}"])
+            .to_string()
     }
 
     // fn country(&self) -> String {
@@ -47,7 +51,6 @@ impl Address {
 
     fn city(&self) -> String {
         let format = &self.city_format();
-
         self.parse(format.as_str())
     }
 }
@@ -59,10 +62,13 @@ impl Base for Address {
             "street_suffix" => Ok(self.street_suffix()),
             "building_number" => Ok(self.building_number()),
             "post_code" => Ok(self.post_code()),
-            _ =>Err(Errors::MethodNotFoundError)
+            "first_name" => Ok(self.first_name(None)),
+            _ => Err(Errors::MethodNotFoundError),
         }
     }
 }
+
+impl SharedFormats for Address {}
 
 #[cfg(test)]
 mod tests {
