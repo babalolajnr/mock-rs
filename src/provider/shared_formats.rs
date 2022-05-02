@@ -1,4 +1,4 @@
-use super::{person::Gender, base::Base};
+use super::{base::Base, person::Gender};
 
 pub trait SharedFormats: Base {
     fn male_name_format(&self) -> String {
@@ -25,10 +25,10 @@ pub trait SharedFormats: Base {
             Some(Gender::Male) => self.first_name_male(),
             Some(Gender::Female) => self.first_name_female(),
             None => {
-                let male_name_format = &self.male_name_format();
-                let female_name_format = &self.female_name_format();
+                let male_name_format = &self.first_name_male();
+                let female_name_format = &self.first_name_female();
                 let merged = vec![male_name_format, female_name_format];
-                self.parse(&self.random_element(&merged).to_string())
+                self.random_element(&merged).to_string()
             }
         }
     }
