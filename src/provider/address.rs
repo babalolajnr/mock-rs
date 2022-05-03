@@ -1,4 +1,3 @@
-
 use super::{
     base::Base,
     person::{Attributes as PersonAttributes, Formats as PersonFormats},
@@ -38,7 +37,7 @@ trait Formats: Base {
     }
 
     fn post_code_format(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["%####"])))
+        self.numerify(Some(self.random_element(&vec!["#####"])))
     }
 }
 
@@ -69,7 +68,7 @@ trait Attributes: Base + Formats {
     }
 
     fn post_code(&self) -> String {
-        todo!()
+        self.bothify(Some(&self.post_code_format())).to_uppercase()
     }
 }
 
@@ -85,6 +84,7 @@ impl Base for Address {
             "street_name" => Ok(self.street_name()),
             "first_name" => Ok(self.first_name(None)),
             "last_name" => Ok(self.last_name()),
+            "street_address" => Ok(self.street_address()),
             _ => Err(format!("Method '{}' not found", string)),
         }
     }
@@ -129,6 +129,20 @@ mod tests {
     fn street_name() {
         let address = Address::new();
         let result = address.street_name();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn street_address() {
+        let address = Address::new();
+        let result = address.street_address();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn post_code() {
+        let address = Address::new();
+        let result = address.post_code();
         println!("{}", result);
         assert!(result.len() > 0);
     }
