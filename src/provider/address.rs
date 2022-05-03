@@ -42,31 +42,35 @@ trait Formats: Base {
 }
 
 trait Attributes: Base + Formats {
-    /// Get random city suffix
+    /// Example: "town"
     fn city_suffix(&self) -> String {
         self.random_element(&vec!["Ville"]).to_string()
     }
 
-    /// Get random street suffix
+    /// Example: "Avenue"
     fn street_suffix(&self) -> String {
         self.random_element(&vec!["Street"]).to_string()
     }
 
+    /// Example: "Sashabury"
     fn city(&self) -> String {
         let format = &self.city_format();
         self.parse(format.as_str())
     }
 
+    /// Example: "Crist Parks"
     fn street_name(&self) -> String {
         let format = &self.street_name_format();
         self.parse(format.as_str())
     }
 
+    /// Example: "791 Crist Parks"
     fn street_address(&self) -> String {
         let format = &self.address_format();
         self.parse(format.as_str())
     }
 
+    /// Example: "86039-9874"
     fn post_code(&self) -> String {
         self.bothify(Some(&self.post_code_format())).to_uppercase()
     }
