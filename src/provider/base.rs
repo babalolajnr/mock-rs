@@ -37,7 +37,6 @@ pub trait Base {
 
     /// Replaces tokens ('{{ tokenName }}') with the result from the token method call
     fn parse(&self, string: &str) -> String {
-        
         let mut result = String::new();
 
         let remove_opening_braces: String = string.split("{{").collect::<String>();
@@ -55,11 +54,84 @@ pub trait Base {
                 result.push_str(&token_value.unwrap());
             }
         }
-        
+
         result
     }
 
     fn call_method(&self, string: &str) -> Result<String, String>;
+
+    ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
+    /// An asterisk ('*') is replaced with either a random number or a random letter
+    fn bothify(&self, string: Option<&str>) -> String {
+        let string = string.unwrap_or("## ??");
+
+        let charset: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let mut rng = rand::thread_rng();
+
+        let random_string = string
+            .chars()
+            .map(|i| {
+                if i == '#' {
+                    let idx = rng.gen_range(0..charset.len());
+                    charset[idx] as char
+                } else if i == '?' {
+                    let idx = rng.gen_range(0..charset.len());
+                    charset[idx] as char
+                } else if i == '*' {
+                    let idx = rng.gen_range(0..charset.len());
+                    charset[idx] as char
+                } else {
+                    i
+                }
+            })
+            .collect();
+
+        random_string
+    }
+
+    // fn replace_wildcard<T>(
+    //     &self,
+    //     string: &str,
+    //     wildcard: Option<&str>,
+    //     callback: Option<T>,
+    // ) -> String
+    // where
+    //     T: Fn() -> str,
+    // {
+    //     let string = string.to_string();
+    //     let wildcard = wildcard.unwrap_or("#");
+    //     let callback = callback.unwrap_or((|| self.random_digit()) as T);
+
+    //     let mut result = String::new();
+
+    //     let mut chars = string.chars();
+    //     let mut last_char = chars.next();
+
+    //     for c in chars {
+    //         if c == wildcard.chars().next().unwrap() {
+    //             if last_char == Some(wildcard.chars().next().unwrap()) {
+    //                 result.push_str(&callback(wildcard));
+    //             } else {
+    //                 result.push_str(&wildcard);
+    //             } 
+    //         } else {
+    //             result.push(c);
+    //         }
+
+    //         last_char = Some(c);
+    //     }
+
+    //     result
+    // }
+
+    /// Get random digit
+    fn random_digit(&self) -> u8 {
+        let charset: &[u8] = b"0123456789";
+        let mut rng = rand::thread_rng();
+
+        let idx = rng.gen_range(0..charset.len());
+        charset[idx]
+    }
 }
 
 #[cfg(test)]
@@ -158,7 +230,7 @@ mod tests {
         let result = test.parse(string);
         assert_eq!("John Doe".to_string(), result)
     }
-    
+
     #[test]
     fn parse_multiple_format_works_without_spaces_in_between() {
         let string = "{{ first_name_male }}{{ last_name }}";
