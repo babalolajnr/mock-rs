@@ -65,21 +65,24 @@ pub trait Base {
     fn bothify(&self, string: Option<&str>) -> String {
         let string = string.unwrap_or("## ??");
 
-        let charset: &[u8] = b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let letterset: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let numberset: &[u8] = b"0123456789";
         let mut rng = rand::thread_rng();
 
         let random_string = string
             .chars()
             .map(|i| {
                 if i == '#' {
-                    let idx = rng.gen_range(0..charset.len());
-                    charset[idx] as char
+                    let idx = rng.gen_range(0..numberset.len());
+                    numberset[idx] as char
                 } else if i == '?' {
-                    let idx = rng.gen_range(0..charset.len());
-                    charset[idx] as char
+                    let idx = rng.gen_range(0..letterset.len());
+                    letterset[idx] as char
                 } else if i == '*' {
-                    let idx = rng.gen_range(0..charset.len());
-                    charset[idx] as char
+                    let charset = vec![numberset, letterset];
+                    let random_set = self.random_element(&charset);
+                    let idx = rng.gen_range(0..random_set.len());
+                    random_set[idx] as char
                 } else {
                     i
                 }
@@ -238,5 +241,14 @@ mod tests {
         let test = Test {};
         let result = test.parse(string);
         assert_eq!("John Doe".to_string(), result)
+    }
+
+    #[test]
+    fn bothify() {
+        let string = "## ??";
+
+        let test = Test {};
+        let result = test.bothify(Some(string));
+        println!("{}", result);
     }
 }
