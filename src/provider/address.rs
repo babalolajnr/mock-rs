@@ -32,12 +32,17 @@ trait Formats: Base {
 
     /// Get building number
     fn building_number(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["%#"])))
+        self.numerify(Some(self.random_element(&vec!["##"])))
             .to_string()
     }
 
     fn post_code_format(&self) -> String {
         self.numerify(Some(self.random_element(&vec!["#####"])))
+    }
+
+    fn street_address_format(&self) -> String {
+        self.random_element(&vec!["{{building_number}} {{street_name}}"])
+        .to_string()
     }
 }
 
@@ -66,13 +71,19 @@ trait Attributes: Base + Formats {
 
     /// Example: "791 Crist Parks"
     fn street_address(&self) -> String {
-        let format = &self.address_format();
+        let format = &self.street_address_format();
         self.parse(format.as_str())
     }
 
     /// Example: "86039-9874"
     fn post_code(&self) -> String {
         self.bothify(Some(&self.post_code_format())).to_uppercase()
+    }
+
+    /// Example: "791 Crist Parks, Sashabury, IL 86039-9874"
+    fn address(&self) -> String {
+        let format = &self.address_format();
+        self.parse(format.as_str())
     }
 }
 
@@ -89,6 +100,7 @@ impl Base for Address {
             "first_name" => Ok(self.first_name(None)),
             "last_name" => Ok(self.last_name()),
             "street_address" => Ok(self.street_address()),
+            "city" => Ok(self.city()),
             _ => Err(format!("Method '{}' not found", string)),
         }
     }
@@ -147,6 +159,13 @@ mod tests {
     fn post_code() {
         let address = Address::new();
         let result = address.post_code();
+        assert!(result.len() > 0);
+    }
+
+    #[test]
+    fn address() {
+        let address = Address::new();
+        let result = address.address();
         println!("{}", result);
         assert!(result.len() > 0);
     }
