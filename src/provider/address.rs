@@ -12,41 +12,7 @@ impl Address {
     }
 }
 
-impl Formats for Address {}
-
-trait Formats: Base {
-    fn street_name_format(&self) -> String {
-        self.random_element(&vec!["{{last_name}} {{street_suffix}}"])
-            .to_string()
-    }
-
-    fn address_format(&self) -> String {
-        self.random_element(&vec!["{{street_address}} {{postcode}} {{city}}"])
-            .to_string()
-    }
-
-    fn city_format(&self) -> String {
-        self.random_element(&vec!["{{first_name}} {{city_suffix}}"])
-            .to_string()
-    }
-
-    /// Get building number
-    fn building_number(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["##"])))
-            .to_string()
-    }
-
-    fn post_code_format(&self) -> String {
-        self.numerify(Some(self.random_element(&vec!["#####"])))
-    }
-
-    fn street_address_format(&self) -> String {
-        self.random_element(&vec!["{{building_number}} {{street_name}}"])
-        .to_string()
-    }
-}
-
-trait Attributes: Base + Formats {
+trait Attributes: Base {
     /// Example: "town"
     fn city_suffix(&self) -> String {
         self.random_element(&vec!["Ville"]).to_string()
@@ -59,31 +25,36 @@ trait Attributes: Base + Formats {
 
     /// Example: "Sashabury"
     fn city(&self) -> String {
-        let format = &self.city_format();
-        self.parse(format.as_str())
+        format!("{} {}", "John", self.city_suffix())
     }
 
     /// Example: "Crist Parks"
     fn street_name(&self) -> String {
-        let format = &self.street_name_format();
-        self.parse(format.as_str())
+        format!("{} {}", "Babalola", self.street_suffix())
     }
 
     /// Example: "791 Crist Parks"
     fn street_address(&self) -> String {
-        let format = &self.street_address_format();
-        self.parse(format.as_str())
+        format!("{} {}", self.numerify(Some("##")), self.street_name())
     }
 
     /// Example: "86039-9874"
-    fn post_code(&self) -> String {
-        self.bothify(Some(&self.post_code_format())).to_uppercase()
+    fn postcode(&self) -> String {
+        self.numerify(Some("#####"))
     }
 
     /// Example: "791 Crist Parks, Sashabury, IL 86039-9874"
     fn address(&self) -> String {
-        let format = &self.address_format();
-        self.parse(format.as_str())
+        format!(
+            "{} {} {}",
+            self.street_address(),
+            self.postcode(),
+            self.city()
+        )
+    }
+
+    fn building_number(&self) -> String {
+        self.numerify(Some("##"))
     }
 }
 
@@ -95,7 +66,7 @@ impl Base for Address {
             "city_suffix" => Ok(self.city_suffix()),
             "street_suffix" => Ok(self.street_suffix()),
             "building_number" => Ok(self.building_number()),
-            "post_code" => Ok(self.post_code()),
+            "postcode" => Ok(self.postcode()),
             "street_name" => Ok(self.street_name()),
             "first_name" => Ok(self.first_name(None)),
             "last_name" => Ok(self.last_name()),
@@ -156,9 +127,9 @@ mod tests {
     }
 
     #[test]
-    fn post_code() {
+    fn postcode() {
         let address = Address::new();
-        let result = address.post_code();
+        let result = address.postcode();
         assert!(result.len() > 0);
     }
 
