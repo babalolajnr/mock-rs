@@ -35,29 +35,6 @@ pub trait Base {
         random_string
     }
 
-    /// Replaces tokens ('{{ tokenName }}') with the result from the token method call
-    fn parse(&self, string: &str) -> String {
-        let mut result = String::new();
-
-        let remove_opening_braces: String = string.split("{{").collect::<String>();
-        let tokens = remove_opening_braces.split("}}").collect::<String>();
-
-        let methods: Vec<&str> = tokens.split(" ").collect::<Vec<&str>>();
-        let methods: Vec<&&str> = methods.iter().filter(|&x| x != &"").collect();
-
-        for i in 0..methods.len() {
-            let token_value = self.call_method(methods[i]);
-
-            if i == methods.len() - 1 && methods.len() > 1 {
-                result.push_str(&(" ".to_string() + &token_value.unwrap()));
-            } else {
-                result.push_str(&token_value.unwrap());
-            }
-        }
-
-        result
-    }
-
     fn call_method(&self, string: &str) -> Result<String, String>;
 
     ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
@@ -91,41 +68,6 @@ pub trait Base {
 
         random_string
     }
-
-    // fn replace_wildcard<T>(
-    //     &self,
-    //     string: &str,
-    //     wildcard: Option<&str>,
-    //     callback: Option<T>,
-    // ) -> String
-    // where
-    //     T: Fn() -> str,
-    // {
-    //     let string = string.to_string();
-    //     let wildcard = wildcard.unwrap_or("#");
-    //     let callback = callback.unwrap_or((|| self.random_digit()) as T);
-
-    //     let mut result = String::new();
-
-    //     let mut chars = string.chars();
-    //     let mut last_char = chars.next();
-
-    //     for c in chars {
-    //         if c == wildcard.chars().next().unwrap() {
-    //             if last_char == Some(wildcard.chars().next().unwrap()) {
-    //                 result.push_str(&callback(wildcard));
-    //             } else {
-    //                 result.push_str(&wildcard);
-    //             } 
-    //         } else {
-    //             result.push(c);
-    //         }
-
-    //         last_char = Some(c);
-    //     }
-
-    //     result
-    // }
 
     /// Get random digit
     fn random_digit(&self) -> u8 {
@@ -205,42 +147,6 @@ mod tests {
 
         let result = test.random_element(&arr);
         assert!(arr.contains(&result));
-    }
-
-    #[test]
-    fn parse_works() {
-        let string = "{{first_name_male}}";
-
-        let test = Test {};
-        let result = test.parse(string);
-        assert_eq!("John".to_string(), result)
-    }
-
-    #[test]
-    fn parse_works_without_leading_spaces() {
-        let string = "{{ first_name_male }}";
-
-        let test = Test {};
-        let result = test.parse(string);
-        assert_eq!("John".to_string(), result)
-    }
-
-    #[test]
-    fn parse_multiple_format_works() {
-        let string = "{{ first_name_male }} {{ last_name }}";
-
-        let test = Test {};
-        let result = test.parse(string);
-        assert_eq!("John Doe".to_string(), result)
-    }
-
-    #[test]
-    fn parse_multiple_format_works_without_spaces_in_between() {
-        let string = "{{ first_name_male }}{{ last_name }}";
-
-        let test = Test {};
-        let result = test.parse(string);
-        assert_eq!("John Doe".to_string(), result)
     }
 
     #[test]
