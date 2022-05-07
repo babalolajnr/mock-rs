@@ -1,7 +1,6 @@
-use super::{
-    base::Base,
-    person::{Attributes as PersonAttributes, Formats as PersonFormats},
-};
+use super::base::Base;
+
+use crate::provider::person::Person;
 
 #[derive(Debug)]
 pub struct Address {}
@@ -77,8 +76,8 @@ impl Base for Address {
     }
 }
 
-impl PersonAttributes for Address {}
-impl PersonFormats for Address {}
+impl Person for Address {}
+
 
 #[cfg(test)]
 mod tests {
