@@ -2,14 +2,14 @@ use rand::{thread_rng, Rng};
 
 pub trait Base {
     /// Returns a index from array/vector
-    fn generate_random_index<T>(&self, arr: &[T]) -> usize {
+    fn random_index<T>(&self, arr: &[T]) -> usize {
         let random_index = thread_rng().gen_range(0..arr.len());
         random_index
     }
 
     /// Returns a random element an array/vector
     fn random_element<'a, T: ?Sized>(&self, arr: &'a Vec<&'a T>) -> &'a T {
-        let random_index = self.generate_random_index(&arr);
+        let random_index = self.random_index(&arr);
         &arr[random_index]
     }
 
@@ -35,7 +35,6 @@ pub trait Base {
         random_string
     }
 
-    fn call_method(&self, string: &str) -> Result<String, String>;
 
     ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
     /// An asterisk ('*') is replaced with either a random number or a random letter
@@ -85,13 +84,6 @@ mod tests {
 
     struct Test;
     impl Base for Test {
-        fn call_method(&self, string: &str) -> Result<String, String> {
-            match string {
-                "first_name_male" => Ok(self.first_name_male().to_string()),
-                "last_name" => Ok(self.last_name().to_string()),
-                _ => Err(format!("Method '{}' not found", string)),
-            }
-        }
     }
 
     impl Test {
@@ -136,7 +128,7 @@ mod tests {
         let arr = vec![1, 2, 3, 4, 5];
         let test = Test {};
 
-        let result = test.generate_random_index(&arr);
+        let result = test.random_index(&arr);
         assert!(result < arr.len());
     }
 
