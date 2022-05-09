@@ -10,16 +10,16 @@ pub struct Person<'a> {
 }
 
 impl Base for Person<'_> {
-    fn call_method(&self, string: &str) -> Result<String, String> {
-        match string {
-            "first_name_male" => Ok(self.first_name_male().to_string()),
-            "first_name_female" => Ok(self.first_name_female().to_string()),
-            "last_name" => Ok(self.last_name().to_string()),
-            "title_male" => Ok(self.title_male().to_string()),
-            "title_female" => Ok(self.title_female().to_string()),
-            _ => Err(format!("Method '{}' not found", string)),
-        }
-    }
+    // fn call_method(&self, string: &str) -> Result<String, String> {
+    //     match string {
+    //         "first_name_male" => Ok(self.first_name_male().to_string()),
+    //         "first_name_female" => Ok(self.first_name_female().to_string()),
+    //         "last_name" => Ok(self.last_name().to_string()),
+    //         "title_male" => Ok(self.title_male().to_string()),
+    //         "title_female" => Ok(self.title_female().to_string()),
+    //         _ => Err(format!("Method '{}' not found", string)),
+    //     }
+    // }
 }
 
 impl<'a> Person<'_> {
@@ -3520,8 +3520,7 @@ impl<'a> Person<'_> {
     }
 
     fn suffix(&self) -> String {
-        self.random_element(&self.suffix)
-        .to_string()
+        self.random_element(&self.suffix).to_string()
     }
 
     fn male_name(&self) -> String {
@@ -3578,29 +3577,35 @@ impl<'a> Person<'_> {
         format!("{:03}-{:02}-{:04}", area, group, serial)
     }
 
-    fn first_name_male(&self) -> String {
-        self.random_element(&self.first_name_male)
-        .to_string()
+    pub fn first_name_male(&self) -> String {
+        self.random_element(&self.first_name_male).to_string()
     }
 
-    fn first_name_female(&self) -> String {
-        self.random_element(&self.first_name_female)
-        .to_string()
+    pub fn first_name_female(&self) -> String {
+        self.random_element(&self.first_name_female).to_string()
     }
 
-    fn last_name(&self) -> String {
-        self.random_element(&self.last_name)
-        .to_string()
+    pub fn last_name(&self) -> String {
+        self.random_element(&self.last_name).to_string()
     }
 
-    fn title_female(&self) -> String {
-        self.random_element(&self.title_female)
-        .to_string()
+    pub fn title_female(&self) -> String {
+        self.random_element(&self.title_female).to_string()
     }
 
-    fn title_male(&self) -> String {
-        self.random_element(&self.title_male)
-        .to_string()
+    pub fn title_male(&self) -> String {
+        self.random_element(&self.title_male).to_string()
+    }
+
+    pub fn first_name(&self) -> String {
+        let genders = vec!["Male", "Female"];
+        let gender = self.random_element(&genders);
+
+        match gender {
+            "Male" => self.first_name_male(),
+            "Female" => self.first_name_female(),
+            _ => panic!("{} is not a gender", gender)
+        }
     }
 }
 
