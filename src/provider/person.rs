@@ -4,7 +4,7 @@ pub enum Gender {
     Male,
     Female,
 }
-pub struct Person {}
+pub struct Person {} 
 
 impl<'a> Person {
     pub fn new() -> Self {
