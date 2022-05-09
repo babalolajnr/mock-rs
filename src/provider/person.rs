@@ -6,7 +6,6 @@ pub enum Gender {
     Male,
     Female,
 }
-<<<<<<< HEAD
 pub struct Person {} 
 
 impl<'a> Person {
@@ -27,21 +26,6 @@ impl Base for Person {
         }
     }
 }
-=======
->>>>>>> 388afb17afa7a8029f9d0963efde8f1003cfafb9
-
-// impl Base for Person {
-//     fn call_method(&self, string: &str) -> Result<String, String> {
-//         match string {
-//             "first_name_male" => Ok(self.first_name_male().to_string()),
-//             "first_name_female" => Ok(self.first_name_female().to_string()),
-//             "last_name" => Ok(self.last_name().to_string()),
-//             "title_male" => Ok(self.title_male().to_string()),
-//             "title_female" => Ok(self.title_female().to_string()),
-//             _ => Err(format!("Method '{}' not found", string)),
-//         }
-//     }
-// }
 
 pub trait Person: Base {
     fn last_name(&self) -> String {
