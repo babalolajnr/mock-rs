@@ -41,7 +41,7 @@ pub trait Base {
     fn bothify(&self, string: Option<&str>) -> String {
         let string = string.unwrap_or("## ??");
 
-        let letterset: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let letterset: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         let numberset: &[u8] = b"0123456789";
         let mut rng = rand::thread_rng();
 
@@ -143,7 +143,7 @@ mod tests {
 
     #[test]
     fn bothify() {
-        let string = "## ??";
+        let string = "?####";
 
         let test = Test {};
         let result = test.bothify(Some(string));
