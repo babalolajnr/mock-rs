@@ -10,8 +10,6 @@ pub struct Address<'a> {
     state: Vec<&'a str>,
     state_abbr: Vec<&'a str>,
     country: Vec<&'a str>,
-    street_name_formats: Vec<&'a str>,
-    street_address_formats: Vec<&'a str>,
     address_formats: Vec<&'a str>,
     secondary_address_formats: Vec<&'a str>,
     person: Person<'a>,
@@ -25,7 +23,7 @@ impl Address<'_> {
                 "town", "ton", "land", "ville", "berg", "burgh", "borough", "bury", "view", "port",
                 "mouth", "stad", "furt", "chester", "mouth", "fort", "haven", "side", "shire",
             ],
-            building_number: vec!["%####", "%###", "%##"],
+            building_number: vec!["?####", "?###", "?##"],
             street_suffix: vec![
                 "Alley",
                 "Avenue",
@@ -559,15 +557,6 @@ impl Address<'_> {
                 "Zambia",
                 "Zimbabwe",
             ],
-            // city_formats: ,
-            street_name_formats: vec![
-                "{{first_name}} {{street_suffix}}",
-                "{{last_name}} {{street_suffix}}",
-            ],
-            street_address_formats: vec![
-                "{{building_number}} {{street_name}}",
-                "{{building_number}} {{street_name}} {{secondary_address}}",
-            ],
             address_formats: vec!["{{street_address}}\n{{city}}, {{state_abbr}} {{postcode}}"],
             secondary_address_formats: vec!["Apt. ###", "Suite ###"],
             person: Person::new(),
@@ -583,7 +572,7 @@ impl Address<'_> {
     }
 
     fn building_number(&self) -> String {
-        self.numerify(Some(self.random_element(&self.building_number)))
+        self.bothify(Some(self.random_element(&self.building_number)))
             .to_string()
     }
 
@@ -608,6 +597,10 @@ impl Address<'_> {
         self.random_element(&self.country).to_string()
     }
 
+    fn secondary_address(&self) -> String {
+        self.numerify(Some(self.random_element(&self.secondary_address_formats)))
+    }
+
     fn city(&self) -> String {
         let formats = vec![
             format!(
@@ -625,19 +618,62 @@ impl Address<'_> {
 
         formats[random_index].to_string()
     }
+
+    fn street_name(&self) -> String {
+        let formats = vec![
+            format!("{} {}", &self.person.first_name(), &self.street_suffix()),
+            format!("{} {}", &self.person.last_name(), &self.street_suffix()),
+        ];
+
+        let random_index = self.random_index(&formats);
+        formats[random_index].to_string()
+    }
+
+    fn street_address(&self) -> String {
+        let formats = vec![
+            format!("{} {}", &self.building_number(), &self.street_name()),
+            format!(
+                "{} {} {}",
+                &self.building_number(),
+                &self.street_name(),
+                &self.secondary_address()
+            ),
+        ];
+
+        let random_index = self.random_index(&formats);
+
+        formats[random_index].to_string()
+    }
 }
 
 impl Base for Address<'_> {}
 
 mod tests {
     use super::*;
-
+    
     #[test]
     fn city() {
         let address = Address::new();
         let city = address.city();
 
-        println!("{}", city);
         assert!(city.len() > 1);
+    }
+
+    #[test]
+    fn street_name() {
+        let address = Address::new();
+        let street_name = address.street_name();
+
+        println!("{}", street_name);
+        assert!(street_name.len() > 1);
+    }
+
+    #[test]
+    fn street_address() {
+        let address = Address::new();
+        let street_address = address.street_address();
+
+        println!("{}", street_address);
+        assert!(street_address.len() > 1);
     }
 }
