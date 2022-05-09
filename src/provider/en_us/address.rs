@@ -23,7 +23,7 @@ impl Address<'_> {
                 "town", "ton", "land", "ville", "berg", "burgh", "borough", "bury", "view", "port",
                 "mouth", "stad", "furt", "chester", "mouth", "fort", "haven", "side", "shire",
             ],
-            building_number: vec!["?####", "?###", "?##"],
+            building_number: vec!["%####", "%###", "%##"],
             street_suffix: vec![
                 "Alley",
                 "Avenue",
@@ -614,9 +614,7 @@ impl Address<'_> {
             format!("{} {}", &self.person.last_name(), &self.city_suffix()),
         ];
 
-        let random_index = self.random_index(&formats);
-
-        formats[random_index].to_string()
+        self.get_format(formats)
     }
 
     fn street_name(&self) -> String {
@@ -625,8 +623,7 @@ impl Address<'_> {
             format!("{} {}", &self.person.last_name(), &self.street_suffix()),
         ];
 
-        let random_index = self.random_index(&formats);
-        formats[random_index].to_string()
+        self.get_format(formats)
     }
 
     fn street_address(&self) -> String {
@@ -640,8 +637,20 @@ impl Address<'_> {
             ),
         ];
 
-        let random_index = self.random_index(&formats);
+        self.get_format(formats)
+    }
 
+    fn address(&self) -> String {
+        let formats = vec![
+            format!("{}\n{}", self.street_address(), self.city()),
+            format!("{} {}", self.state_abbr(), self.post_code()),
+        ];
+
+        self.get_format(formats)
+    }
+
+    fn get_format(&self, formats: Vec<String>) -> String {
+        let random_index = self.random_index(&formats);
         formats[random_index].to_string()
     }
 }
@@ -650,7 +659,7 @@ impl Base for Address<'_> {}
 
 mod tests {
     use super::*;
-    
+
     #[test]
     fn city() {
         let address = Address::new();
@@ -675,5 +684,14 @@ mod tests {
 
         println!("{}", street_address);
         assert!(street_address.len() > 1);
+    }
+
+    #[test]
+    fn address() {
+        let address = Address::new();
+        let address = address.address();
+
+        println!("{}", address);
+        assert!(address.len() > 1);
     }
 }
