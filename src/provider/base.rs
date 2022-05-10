@@ -8,7 +8,7 @@ pub trait Base {
     }
 
     /// Returns a random element an array/vector
-    fn random_element<'a, T: ?Sized>(&self, arr: &'a Vec<&'a T>) -> &'a T {
+    fn random_element<'a, T: ?Sized>(&self, arr: &'a Vec<&T>) -> &'a T {
         let random_index = self.random_index(&arr);
         &arr[random_index]
     }
@@ -34,7 +34,6 @@ pub trait Base {
 
         random_string
     }
-
 
     ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
     /// An asterisk ('*') is replaced with either a random number or a random letter
@@ -83,8 +82,7 @@ mod tests {
     use super::*;
 
     struct Test;
-    impl Base for Test {
-    }
+    impl Base for Test {}
 
     impl Test {
         pub fn first_name_male<'a>(&self) -> &'a str {
