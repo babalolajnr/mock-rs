@@ -1,8 +1,8 @@
 use rand::Rng;
 
-use crate::provider::{base::Base, company::Company as CompanyTrait};
+use crate::provider::{base::Base, company::Company as CompanyTrait, person::Person};
 
-use super::person::Person;
+use super::person::Person as PersonProvider;
 
 pub struct Company<'a> {
     catch_phrase_words: Vec<Vec<&'a str>>,
@@ -10,7 +10,7 @@ pub struct Company<'a> {
     job_titles: Vec<&'a str>,
     company_suffixes: Vec<&'a str>,
     ein_prefixes: Vec<u8>,
-    person: Person<'a>,
+    person: Box<dyn Person>,
 }
 
 impl Base for Company<'_> {}
@@ -547,7 +547,7 @@ impl Company<'_> {
                 66, 67, 68, 71, 72, 73, 74, 75, 76, 77, 80, 81, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95, 98, 99,
             ],
 
-            person: Person::new()
+            person: Box::new(PersonProvider::new()),
         }
     }
 
