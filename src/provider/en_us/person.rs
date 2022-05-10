@@ -1,4 +1,8 @@
-use crate::provider::{base::Base, miscellaneous::Miscellaneous};
+use crate::provider::{
+    base::Base,
+    miscellaneous::Miscellaneous,
+    person::{Gender, Person as PersonTrait},
+};
 
 pub struct Person<'a> {
     first_name_female: Vec<&'a str>,
@@ -9,18 +13,7 @@ pub struct Person<'a> {
     title_female: Vec<&'a str>,
 }
 
-impl Base for Person<'_> {
-    // fn call_method(&self, string: &str) -> Result<String, String> {
-    //     match string {
-    //         "first_name_male" => Ok(self.first_name_male().to_string()),
-    //         "first_name_female" => Ok(self.first_name_female().to_string()),
-    //         "last_name" => Ok(self.last_name().to_string()),
-    //         "title_male" => Ok(self.title_male().to_string()),
-    //         "title_female" => Ok(self.title_female().to_string()),
-    //         _ => Err(format!("Method '{}' not found", string)),
-    //     }
-    // }
-}
+impl Base for Person<'_> {}
 
 impl<'a> Person<'_> {
     pub fn new() -> Person<'a> {
@@ -3576,36 +3569,69 @@ impl<'a> Person<'_> {
 
         format!("{:03}-{:02}-{:04}", area, group, serial)
     }
+}
 
-    pub fn first_name_male(&self) -> String {
-        self.random_element(&self.first_name_male).to_string()
+impl PersonTrait for Person<'_> {
+    fn name(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.male_name(),
+            Some(Gender::Female) => self.female_name(),
+            None => format!("{:?} is not a gender", gender),
+        }
     }
 
-    pub fn first_name_female(&self) -> String {
-        self.random_element(&self.first_name_female).to_string()
+    fn first_name(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.first_name_male(),
+            Some(Gender::Female) => self.first_name_female(),
+            None => {
+                let genders = vec!["Male", "Female"];
+                let gender = self.random_element(&genders);
+
+                match gender {
+                    "Male" => self.first_name_male(),
+                    "Female" => self.first_name_female(),
+                    _ => panic!("{} is not a gender", gender),
+                }
+            }
+        }
     }
 
-    pub fn last_name(&self) -> String {
+    fn last_name(&self) -> String {
         self.random_element(&self.last_name).to_string()
     }
 
-    pub fn title_female(&self) -> String {
+    fn first_name_male(&self) -> String {
+        self.random_element(&self.first_name_male).to_string()
+    }
+
+    fn first_name_female(&self) -> String {
+        self.random_element(&self.first_name_female).to_string()
+    }
+
+    fn title(&self, gender: Option<Gender>) -> String {
+        match gender {
+            Some(Gender::Male) => self.title_male(),
+            Some(Gender::Female) => self.title_female(),
+            None => {
+                let genders = vec!["Male", "Female"];
+                let gender = self.random_element(&genders);
+
+                match gender {
+                    "Male" => self.title_male(),
+                    "Female" => self.title_female(),
+                    _ => panic!("{} is not a gender", gender),
+                }
+            }
+        }
+    }
+
+    fn title_female(&self) -> String {
         self.random_element(&self.title_female).to_string()
     }
 
-    pub fn title_male(&self) -> String {
+    fn title_male(&self) -> String {
         self.random_element(&self.title_male).to_string()
-    }
-
-    pub fn first_name(&self) -> String {
-        let genders = vec!["Male", "Female"];
-        let gender = self.random_element(&genders);
-
-        match gender {
-            "Male" => self.first_name_male(),
-            "Female" => self.first_name_female(),
-            _ => panic!("{} is not a gender", gender)
-        }
     }
 }
 
