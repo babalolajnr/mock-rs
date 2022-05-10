@@ -658,6 +658,11 @@ impl Address<'_> {
         let latitude = rand::random::<f64>() * 180.0 - 90.0;
         format!("{:.6}", latitude).parse::<f64>().unwrap()
     }
+
+    fn longitude(&self) -> f64 {
+        let longitude = rand::random::<f64>() * 360.0 - 180.0;
+        format!("{:.6}", longitude).parse::<f64>().unwrap()
+    }
 }
 
 impl Base for Address<'_> {}
@@ -710,4 +715,13 @@ mod tests {
         println!("{}", latitude);
     }
 
+    #[test]
+    fn longitude() {
+        let address = Address::new();
+        let longitude = address.longitude();
+
+        assert!(longitude >= -180.0);
+        assert!(longitude <= 180.0);
+        println!("{}", longitude);
+    }
 }
