@@ -565,45 +565,45 @@ impl Address<'_> {
         }
     }
 
-    fn city_prefix(&self) -> String {
+    pub fn city_prefix(&self) -> String {
         self.random_element(&self.city_prefix).to_string()
     }
 
-    fn city_suffix(&self) -> String {
+    pub fn city_suffix(&self) -> String {
         self.random_element(&self.city_suffix).to_string()
     }
 
-    fn building_number(&self) -> String {
+    pub fn building_number(&self) -> String {
         self.bothify(Some(self.random_element(&self.building_number)))
             .to_string()
     }
 
-    fn street_suffix(&self) -> String {
+    pub fn street_suffix(&self) -> String {
         self.random_element(&self.street_suffix).to_string()
     }
 
-    fn post_code(&self) -> String {
+    pub fn post_code(&self) -> String {
         self.bothify(Some(self.random_element(&self.post_code)))
             .to_string()
     }
 
-    fn state(&self) -> String {
+    pub fn state(&self) -> String {
         self.random_element(&self.state).to_string()
     }
 
-    fn state_abbr(&self) -> String {
+    pub fn state_abbr(&self) -> String {
         self.random_element(&self.state_abbr).to_string()
     }
 
-    fn country(&self) -> String {
+    pub fn country(&self) -> String {
         self.random_element(&self.country).to_string()
     }
 
-    fn secondary_address(&self) -> String {
+    pub fn secondary_address(&self) -> String {
         self.numerify(Some(self.random_element(&self.secondary_address_formats)))
     }
 
-    fn city(&self) -> String {
+    pub fn city(&self) -> String {
         let formats = vec![
             format!(
                 "{} {}{}",
@@ -619,7 +619,7 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    fn street_name(&self) -> String {
+    pub fn street_name(&self) -> String {
         let formats = vec![
             format!("{} {}", &self.person.first_name(), &self.street_suffix()),
             format!("{} {}", &self.person.last_name(), &self.street_suffix()),
@@ -628,7 +628,7 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    fn street_address(&self) -> String {
+    pub fn street_address(&self) -> String {
         let formats = vec![
             format!("{} {}", &self.building_number(), &self.street_name()),
             format!(
@@ -642,7 +642,7 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    fn address(&self) -> String {
+    pub fn address(&self) -> String {
         let formats = vec![
             format!("{}\n{}", self.street_address(), self.city()),
             format!("{} {}", self.state_abbr(), self.post_code()),
@@ -656,18 +656,18 @@ impl Address<'_> {
         formats[random_index].to_string()
     }
 
-    fn latitude(&self) -> f64 {
+    pub fn latitude(&self) -> f64 {
         let latitude = rand::random::<f64>() * 180.0 - 90.0;
         format!("{:.6}", latitude).parse::<f64>().unwrap()
     }
 
-    fn longitude(&self) -> f64 {
+    pub fn longitude(&self) -> f64 {
         let longitude = rand::random::<f64>() * 360.0 - 180.0;
         format!("{:.6}", longitude).parse::<f64>().unwrap()
     }
 
     /// Returns (latitude, longitude)
-    fn local_cordinates(&self) -> (f64, f64) {
+    pub fn local_cordinates(&self) -> (f64, f64) {
         (self.latitude(), self.longitude())
     }
 }
