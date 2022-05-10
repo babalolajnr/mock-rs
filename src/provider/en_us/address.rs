@@ -1,3 +1,4 @@
+use crate::provider::address::Address as AddressTrait;
 use crate::provider::base::Base;
 use crate::provider::person::Person;
 
@@ -10,7 +11,7 @@ pub struct Address<'a> {
     city_suffix: Vec<&'a str>,
     building_number: Vec<&'a str>,
     street_suffix: Vec<&'a str>,
-    post_code: Vec<&'a str>,
+    postcode: Vec<&'a str>,
     state: Vec<&'a str>,
     state_abbr: Vec<&'a str>,
     country: Vec<&'a str>,
@@ -255,7 +256,7 @@ impl Address<'_> {
                 "Well",
                 "Wells",
             ],
-            post_code: vec!["#####", "#####-####"],
+            postcode: vec!["#####", "#####-####"],
             state: vec![
                 "Alabama",
                 "Alaska",
@@ -567,28 +568,6 @@ impl Address<'_> {
         }
     }
 
-    pub fn city_prefix(&self) -> String {
-        self.random_element(&self.city_prefix).to_string()
-    }
-
-    pub fn city_suffix(&self) -> String {
-        self.random_element(&self.city_suffix).to_string()
-    }
-
-    pub fn building_number(&self) -> String {
-        self.bothify(Some(self.random_element(&self.building_number)))
-            .to_string()
-    }
-
-    pub fn street_suffix(&self) -> String {
-        self.random_element(&self.street_suffix).to_string()
-    }
-
-    pub fn post_code(&self) -> String {
-        self.bothify(Some(self.random_element(&self.post_code)))
-            .to_string()
-    }
-
     pub fn state(&self) -> String {
         self.random_element(&self.state).to_string()
     }
@@ -605,7 +584,27 @@ impl Address<'_> {
         self.numerify(Some(self.random_element(&self.secondary_address_formats)))
     }
 
-    pub fn city(&self) -> String {
+    pub fn city_prefix(&self) -> String {
+        self.random_element(&self.city_prefix).to_string()
+    }
+}
+
+impl Base for Address<'_> {}
+impl AddressTrait for Address<'_> {
+    fn city_suffix(&self) -> String {
+        self.random_element(&self.city_suffix).to_string()
+    }
+
+    fn street_suffix(&self) -> String {
+        self.random_element(&self.street_suffix).to_string()
+    }
+
+    fn building_number(&self) -> String {
+        self.bothify(Some(self.random_element(&self.building_number)))
+            .to_string()
+    }
+
+    fn city(&self) -> String {
         let formats = vec![
             format!(
                 "{} {}{}",
@@ -621,7 +620,7 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    pub fn street_name(&self) -> String {
+    fn street_name(&self) -> String {
         let formats = vec![
             format!(
                 "{} {}",
@@ -634,7 +633,7 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    pub fn street_address(&self) -> String {
+    fn street_address(&self) -> String {
         let formats = vec![
             format!("{} {}", &self.building_number(), &self.street_name()),
             format!(
@@ -648,37 +647,20 @@ impl Address<'_> {
         self.get_format(formats)
     }
 
-    pub fn address(&self) -> String {
+    fn address(&self) -> String {
         let formats = vec![
             format!("{}\n{}", self.street_address(), self.city()),
-            format!("{} {}", self.state_abbr(), self.post_code()),
+            format!("{} {}", self.state_abbr(), self.postcode()),
         ];
 
         self.get_format(formats)
     }
 
-    fn get_format(&self, formats: Vec<String>) -> String {
-        let random_index = self.random_index(&formats);
-        formats[random_index].to_string()
-    }
-
-    pub fn latitude(&self) -> f64 {
-        let latitude = rand::random::<f64>() * 180.0 - 90.0;
-        format!("{:.6}", latitude).parse::<f64>().unwrap()
-    }
-
-    pub fn longitude(&self) -> f64 {
-        let longitude = rand::random::<f64>() * 360.0 - 180.0;
-        format!("{:.6}", longitude).parse::<f64>().unwrap()
-    }
-
-    /// Returns (latitude, longitude)
-    pub fn local_cordinates(&self) -> (f64, f64) {
-        (self.latitude(), self.longitude())
+    fn postcode(&self) -> String {
+        self.bothify(Some(self.random_element(&self.postcode)))
+        .to_string()
     }
 }
-
-impl Base for Address<'_> {}
 
 mod tests {
     use super::*;
