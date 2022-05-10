@@ -1,6 +1,8 @@
 use crate::provider::base::Base;
+use crate::provider::person::Person;
 
-use super::person::Person;
+use super::person::Person as PersonProvider;
+
 /// EN_US address provider generates random address related
 /// data.
 pub struct Address<'a> {
@@ -14,7 +16,7 @@ pub struct Address<'a> {
     country: Vec<&'a str>,
     address_formats: Vec<&'a str>,
     secondary_address_formats: Vec<&'a str>,
-    person: Person<'a>,
+    person: Box<dyn Person>,
 }
 
 impl Address<'_> {
@@ -561,7 +563,7 @@ impl Address<'_> {
             ],
             address_formats: vec!["{{street_address}}\n{{city}}, {{state_abbr}} {{postcode}}"],
             secondary_address_formats: vec!["Apt. ###", "Suite ###"],
-            person: Person::new(),
+            person: Box::new(PersonProvider::new()),
         }
     }
 
@@ -608,11 +610,11 @@ impl Address<'_> {
             format!(
                 "{} {}{}",
                 &self.city_prefix(),
-                &self.person.first_name(),
+                &self.person.first_name(None),
                 &self.city_suffix()
             ),
-            format!("{} {}", &self.city_prefix(), &self.person.first_name()),
-            format!("{} {}", &self.person.first_name(), &self.city_suffix()),
+            format!("{} {}", &self.city_prefix(), &self.person.first_name(None)),
+            format!("{} {}", &self.person.first_name(None), &self.city_suffix()),
             format!("{} {}", &self.person.last_name(), &self.city_suffix()),
         ];
 
@@ -621,7 +623,11 @@ impl Address<'_> {
 
     pub fn street_name(&self) -> String {
         let formats = vec![
-            format!("{} {}", &self.person.first_name(), &self.street_suffix()),
+            format!(
+                "{} {}",
+                &self.person.first_name(None),
+                &self.street_suffix()
+            ),
             format!("{} {}", &self.person.last_name(), &self.street_suffix()),
         ];
 
