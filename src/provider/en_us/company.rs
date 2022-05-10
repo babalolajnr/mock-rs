@@ -1,3 +1,5 @@
+use rand::Rng;
+
 use crate::provider::base::Base;
 
 pub struct Company<'a> {
@@ -562,13 +564,23 @@ impl Company<'_> {
     /// Example: 'integrate extensible convergence'
     pub fn bs(&self) -> String {
         let mut result: Vec<String> = vec![];
-        
+
         self.bs_words.clone().into_iter().for_each(|bs| {
             let bs = self.random_element(&bs);
             result.push(bs.to_string());
         });
 
         result.join(" ")
+    }
+
+    /// Example: "84-7210772"
+    pub fn ein(&self) -> String {
+        let random_index = self.random_index(&self.ein_prefixes);
+        let prefix = &self.ein_prefixes[random_index];
+
+        let suffix: usize = rand::thread_rng().gen_range(0..9999999);
+
+        format!("{:02}-{:07}", prefix, suffix)
     }
 }
 
@@ -592,5 +604,14 @@ mod tests {
 
         println!("{}", bs);
         assert!(bs.len() > 0);
+    }
+
+    #[test]
+    fn ein() {
+        let company = Company::new();
+        let ein = company.ein();
+
+        println!("{}", ein);
+        assert!(ein.len() > 0);
     }
 }
