@@ -543,4 +543,33 @@ impl Company<'_> {
             ]
         }
     }
+
+    /// Example: 'Robust full-range hub'
+    pub fn catch_phrase(&self) -> String {
+        let mut result: Vec<String> = vec![];
+
+        self.catch_phrase_words
+            .clone()
+            .into_iter()
+            .for_each(|catch_phrase| {
+                let catch_phrase = self.random_element(&catch_phrase);
+                result.push(catch_phrase.to_string());
+            });
+
+        result.join(" ")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_catch_phrase() {
+        let company = Company::new();
+        let catch_phrase = company.catch_phrase();
+
+        println!("{}", catch_phrase);
+        assert!(catch_phrase.len() > 0);
+    }
 }
