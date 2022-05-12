@@ -1,5 +1,5 @@
 ///Computes the checksum of an EAN number
-fn checksum(digits: &str) -> u8 {
+pub fn checksum(digits: &str) -> u8 {
     let sequence = if (digits.len() + 1) == 8 {
         [3, 1]
     } else {
