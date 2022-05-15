@@ -2,22 +2,35 @@ use crate::calculator::ean;
 
 use super::base::Base;
 
-pub trait Barcode: Base {
-    fn ean(&self, length: u8) -> String {
-        let code = &self.numerify(Some(&str::repeat("#", (length - 1).into())));
+pub struct Barcode {}
 
-        format!("{}{}", code, ean::checksum(code))
+impl Base for Barcode {}
+
+impl Barcode {
+    pub fn ean(length: u8) -> String {
+        let code = Self::numerify(Some(&str::repeat("#", (length - 1).into())));
+        format!("{}{}", code, ean::checksum(&code))
     }
 
     /// Get random EAN-13 barcode
-    fn ean13(&self) -> String {
-        self.ean(13)
+    pub fn ean13() -> String {
+        Self::ean(13)
     }
 
     /// Get random EAN-8 barcode
-    fn ean8(&self) -> String {
-        self.ean(8)
+    pub fn ean8() -> String {
+        Self::ean(8)
     }
 
-    
+    /// Get random ISBN-10
+    pub fn isbn10() -> String {
+        // let code = .numerify(Some(&str::repeat("#", (9).into())));
+        todo!()
+    }
+
+    /// Get random ISBN-13
+    pub fn isbn13() -> String {
+        todo!()
+    }
 }
+
