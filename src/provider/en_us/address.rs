@@ -581,7 +581,7 @@ impl Address<'_> {
     }
 
     pub fn secondary_address(&self) -> String {
-        self.numerify(Some(self.random_element(&self.secondary_address_formats)))
+        Self::numerify(Some(self.random_element(&self.secondary_address_formats)))
     }
 
     pub fn city_prefix(&self) -> String {
