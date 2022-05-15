@@ -2,14 +2,14 @@ use rand::{thread_rng, Rng};
 
 pub trait Base {
     /// Returns a index from array/vector
-    fn random_index<T>(&self, arr: &[T]) -> usize {
+    fn random_index<T>(arr: &[T]) -> usize {
         let random_index = thread_rng().gen_range(0..arr.len());
         random_index
     }
 
     /// Returns a random element an array/vector
-    fn random_element<'a, T: ?Sized>(&self, arr: &'a Vec<&T>) -> &'a T {
-        let random_index = self.random_index(&arr);
+    fn random_element<'a, T: ?Sized>(arr: &'a Vec<&T>) -> &'a T {
+        let random_index = Self::random_index(&arr);
         &arr[random_index]
     }
 
@@ -37,7 +37,7 @@ pub trait Base {
 
     ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
     /// An asterisk ('*') is replaced with either a random number or a random letter
-    fn bothify(&self, string: Option<&str>) -> String {
+    fn bothify(string: Option<&str>) -> String {
         let string = string.unwrap_or("## ??");
 
         let letterset: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -55,7 +55,7 @@ pub trait Base {
                     letterset[idx] as char
                 } else if i == '*' {
                     let charset = vec![numberset, letterset];
-                    let random_set = self.random_element(&charset);
+                    let random_set = Self::random_element(&charset);
                     let idx = rng.gen_range(0..random_set.len());
                     random_set[idx] as char
                 } else {
@@ -68,7 +68,7 @@ pub trait Base {
     }
 
     /// Get random digit
-    fn random_digit(&self) -> u8 {
+    fn random_digit() -> u8 {
         let charset: &[u8] = b"0123456789";
         let mut rng = rand::thread_rng();
 
@@ -121,18 +121,16 @@ mod tests {
     #[test]
     fn generate_random_index_works() {
         let arr = vec![1, 2, 3, 4, 5];
-        let test = Test {};
 
-        let result = test.random_index(&arr);
+        let result = Test::random_index(&arr);
         assert!(result < arr.len());
     }
 
     #[test]
     fn random_element_works() {
         let arr = vec!["a", "b", "c", "d", "e"];
-        let test = Test {};
 
-        let result = test.random_element(&arr);
+        let result = Test::random_element(&arr);
         assert!(arr.contains(&result));
     }
 
@@ -141,7 +139,7 @@ mod tests {
         let string = "?####";
 
         let test = Test {};
-        let result = test.bothify(Some(string));
+        let result = Test::bothify(Some(string));
         println!("{}", result);
     }
 }

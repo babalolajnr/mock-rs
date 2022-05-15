@@ -569,38 +569,38 @@ impl Address<'_> {
     }
 
     pub fn state(&self) -> String {
-        self.random_element(&self.state).to_string()
+        Self::random_element(&self.state).to_string()
     }
 
     pub fn state_abbr(&self) -> String {
-        self.random_element(&self.state_abbr).to_string()
+        Self::random_element(&self.state_abbr).to_string()
     }
 
     pub fn country(&self) -> String {
-        self.random_element(&self.country).to_string()
+        Self::random_element(&self.country).to_string()
     }
 
     pub fn secondary_address(&self) -> String {
-        Self::numerify(Some(self.random_element(&self.secondary_address_formats)))
+        Self::numerify(Some(Self::random_element(&self.secondary_address_formats)))
     }
 
     pub fn city_prefix(&self) -> String {
-        self.random_element(&self.city_prefix).to_string()
+        Self::random_element(&self.city_prefix).to_string()
     }
 }
 
 impl Base for Address<'_> {}
 impl AddressTrait for Address<'_> {
     fn city_suffix(&self) -> String {
-        self.random_element(&self.city_suffix).to_string()
+        Self::random_element(&self.city_suffix).to_string()
     }
 
     fn street_suffix(&self) -> String {
-        self.random_element(&self.street_suffix).to_string()
+        Self::random_element(&self.street_suffix).to_string()
     }
 
     fn building_number(&self) -> String {
-        self.bothify(Some(self.random_element(&self.building_number)))
+        Self::bothify(Some(Self::random_element(&self.building_number)))
             .to_string()
     }
 
@@ -657,7 +657,7 @@ impl AddressTrait for Address<'_> {
     }
 
     fn postcode(&self) -> String {
-        self.bothify(Some(self.random_element(&self.postcode)))
+        Self::bothify(Some(Self::random_element(&self.postcode)))
         .to_string()
     }
 }

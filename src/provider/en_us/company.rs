@@ -559,7 +559,7 @@ impl Company<'_> {
             .clone()
             .into_iter()
             .for_each(|catch_phrase| {
-                let catch_phrase = self.random_element(&catch_phrase);
+                let catch_phrase = Self::random_element(&catch_phrase);
                 result.push(catch_phrase.to_string());
             });
 
@@ -571,7 +571,7 @@ impl Company<'_> {
         let mut result: Vec<String> = vec![];
 
         self.bs_words.clone().into_iter().for_each(|bs| {
-            let bs = self.random_element(&bs);
+            let bs = Self::random_element(&bs);
             result.push(bs.to_string());
         });
 
@@ -580,7 +580,7 @@ impl Company<'_> {
 
     /// Example: "84-7210772"
     pub fn ein(&self) -> String {
-        let random_index = self.random_index(&self.ein_prefixes);
+        let random_index = Self::random_index(&self.ein_prefixes);
         let prefix = &self.ein_prefixes[random_index];
 
         let suffix: usize = rand::thread_rng().gen_range(0..9999999);
@@ -595,11 +595,11 @@ impl CompanyTrait for Company<'_> {
     }
 
     fn company_suffix(&self) -> String {
-        self.random_element(&self.company_suffixes).to_string()
+        Self::random_element(&self.company_suffixes).to_string()
     }
 
     fn job_title(&self) -> String {
-        self.random_element(&self.job_titles).to_string()
+        Self::random_element(&self.job_titles).to_string()
     }
 }
 

@@ -3513,11 +3513,11 @@ impl<'a> Person<'_> {
     }
 
     fn suffix(&self) -> String {
-        self.random_element(&self.suffix).to_string()
+        Self::random_element(&self.suffix).to_string()
     }
 
     fn male_name(&self) -> String {
-        self.random_element(&vec![
+        Self::random_element(&vec![
             &format!("{} {}", self.first_name_male(), self.last_name()),
             &format!(
                 "{} {} {}",
@@ -3537,7 +3537,7 @@ impl<'a> Person<'_> {
     }
 
     fn female_name(&self) -> String {
-        self.random_element(&vec![
+        Self::random_element(&vec![
             &format!("{} {}", self.first_name_female(), self.last_name()),
             &format!(
                 "{} {} {}",
@@ -3586,7 +3586,7 @@ impl PersonTrait for Person<'_> {
             Some(Gender::Female) => self.first_name_female(),
             None => {
                 let genders = vec!["Male", "Female"];
-                let gender = self.random_element(&genders);
+                let gender = Self::random_element(&genders);
 
                 match gender {
                     "Male" => self.first_name_male(),
@@ -3598,15 +3598,15 @@ impl PersonTrait for Person<'_> {
     }
 
     fn last_name(&self) -> String {
-        self.random_element(&self.last_name).to_string()
+        Self::random_element(&self.last_name).to_string()
     }
 
     fn first_name_male(&self) -> String {
-        self.random_element(&self.first_name_male).to_string()
+        Self::random_element(&self.first_name_male).to_string()
     }
 
     fn first_name_female(&self) -> String {
-        self.random_element(&self.first_name_female).to_string()
+        Self::random_element(&self.first_name_female).to_string()
     }
 
     fn title(&self, gender: Option<Gender>) -> String {
@@ -3615,7 +3615,7 @@ impl PersonTrait for Person<'_> {
             Some(Gender::Female) => self.title_female(),
             None => {
                 let genders = vec!["Male", "Female"];
-                let gender = self.random_element(&genders);
+                let gender = Self::random_element(&genders);
 
                 match gender {
                     "Male" => self.title_male(),
@@ -3627,11 +3627,11 @@ impl PersonTrait for Person<'_> {
     }
 
     fn title_female(&self) -> String {
-        self.random_element(&self.title_female).to_string()
+        Self::random_element(&self.title_female).to_string()
     }
 
     fn title_male(&self) -> String {
-        self.random_element(&self.title_male).to_string()
+        Self::random_element(&self.title_male).to_string()
     }
 }
 

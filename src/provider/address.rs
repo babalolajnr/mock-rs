@@ -33,7 +33,7 @@ pub trait Address: Base {
     }
 
     fn get_format(&self, formats: Vec<String>) -> String {
-        let random_index = self.random_index(&formats);
+        let random_index = Self::random_index(&formats);
         formats[random_index].to_string()
     }
 }
