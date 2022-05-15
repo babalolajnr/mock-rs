@@ -14,7 +14,7 @@ pub trait Base {
     }
 
     /// Replaces all occurences of '#'s with a random number
-    fn numerify(&self, string: Option<&str>) -> String {
+    fn numerify(string: Option<&str>) -> String {
         let string = string.unwrap_or("####");
 
         let charset: &[u8] = b"0123456789";
@@ -97,27 +97,24 @@ mod tests {
     #[test]
     fn numerify_works() {
         let string = "####";
-        let test = Test {};
 
-        let result = test.numerify(Some(string));
+        let result = Test::numerify(Some(string));
         assert_eq!(result.len(), string.len());
     }
 
     #[test]
     fn numerify_works_with_no_string() {
         let string = None;
-        let test = Test {};
 
-        let result = test.numerify(string);
+        let result = Test::numerify(string);
         assert_eq!(result.len(), 4);
     }
 
     #[test]
     fn numerify_works_with_string_of_hashes_mixed_with_other_chars() {
         let string = "Hello #####";
-        let test = Test {};
 
-        let result = test.numerify(Some(string));
+        let result = Test::numerify(Some(string));
         assert_eq!(result.len(), string.len());
     }
 
