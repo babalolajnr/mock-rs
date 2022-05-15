@@ -617,7 +617,7 @@ impl AddressTrait for Address<'_> {
             format!("{} {}", &self.person.last_name(), &self.city_suffix()),
         ];
 
-        self.get_format(formats)
+        Self::get_format(formats)
     }
 
     fn street_name(&self) -> String {
@@ -630,7 +630,7 @@ impl AddressTrait for Address<'_> {
             format!("{} {}", &self.person.last_name(), &self.street_suffix()),
         ];
 
-        self.get_format(formats)
+        Self::get_format(formats)
     }
 
     fn street_address(&self) -> String {
@@ -644,7 +644,7 @@ impl AddressTrait for Address<'_> {
             ),
         ];
 
-        self.get_format(formats)
+        Self::get_format(formats)
     }
 
     fn address(&self) -> String {
@@ -653,7 +653,7 @@ impl AddressTrait for Address<'_> {
             format!("{} {}", self.state_abbr(), self.postcode()),
         ];
 
-        self.get_format(formats)
+        Self::get_format(formats)
     }
 
     fn postcode(&self) -> String {
@@ -702,8 +702,7 @@ mod tests {
 
     #[test]
     fn latitude() {
-        let address = Address::new();
-        let latitude = address.latitude();
+        let latitude = Address::latitude();
 
         assert!(latitude >= -90.0);
         assert!(latitude <= 90.0);
@@ -713,7 +712,7 @@ mod tests {
     #[test]
     fn longitude() {
         let address = Address::new();
-        let longitude = address.longitude();
+        let longitude = Address::longitude();
 
         assert!(longitude >= -180.0);
         assert!(longitude <= 180.0);
@@ -723,7 +722,7 @@ mod tests {
     #[test]
     fn local_cordinates() {
         let address = Address::new();
-        let (latitude, longitude) = address.local_cordinates();
+        let (latitude, longitude) = Address::local_cordinates();
 
         assert!(latitude >= -90.0);
         assert!(latitude <= 90.0);
