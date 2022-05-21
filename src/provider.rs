@@ -5,3 +5,4 @@ pub mod company;
 pub mod person;
 pub mod address;
 pub mod barcode;
+pub mod payment;
