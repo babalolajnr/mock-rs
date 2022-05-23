@@ -1,4 +1,4 @@
-fn checksum(number: &str) -> u32 {
+pub fn checksum(number: &str) -> u32 {
     let mut sum = 0;
     for (i, c) in number.chars().rev().enumerate() {
         let digit = c.to_digit(10).unwrap();
@@ -9,7 +9,7 @@ fn checksum(number: &str) -> u32 {
     sum % 10
 }
 
-fn compute_check_digit(partial_number: &str) -> String {
+pub fn compute_check_digit(partial_number: &str) -> String {
     let check_digit = 10 - checksum(format!("{}{}", partial_number, "0").as_str());
 
     if check_digit == 0 {
