@@ -172,46 +172,40 @@ pub trait Payment<'a>: Base {
         let card_number;
         let default_card_param = vec!["2221###########"];
 
-        let card_type = match credit_card_type {
-            Some(card_type) => {
-                if !Self::card_vendors().contains(&card_type) {
-                    panic!("{} is not a valid credit_card_type \n This is a list of the valid card types {:?}", card_type, Self::card_vendors())
-                }
-                card_type
+        let card_type = if let Some(card_type) = credit_card_type {
+            if !Self::card_vendors().contains(&card_type) {
+                panic!("{} is not a valid credit_card_type \n This is a list of the valid card types {:?}", 
+                card_type, Self::card_vendors())
             }
-            None => {
-                let card_vendors = Self::card_vendors();
-                let random_index = Self::random_index(&card_vendors);
-                let card_type = card_vendors[random_index];
-                card_type
-            }
+            card_type
+        } else {
+            let card_vendors = Self::card_vendors();
+            let random_index = Self::random_index(&card_vendors);
+            let card_type = card_vendors[random_index];
+            card_type
         };
 
         let card_params = Self::card_params();
 
-        let card_param = match card_params.get(&card_type) {
-            Some(card_param) => card_param,
-            None => card_params.get("MasterCard").unwrap_or(&default_card_param),
-        };
+        let card_param = card_params.get(&card_type).unwrap_or(&default_card_param);
 
         let mask = Self::random_element(&card_param);
 
         let mut number = Self::numerify(Some(mask));
         number = format!("{}{}", number, luhn::compute_check_digit(&number));
 
-        card_number = match formatted {
-            Some(true) => {
-                let separator = separator.unwrap_or('-');
-                let p1 = number.chars().take(4).collect::<String>();
-                let p2 = number.chars().skip(4).take(4).collect::<String>();
-                let p3 = number.chars().skip(8).take(4).collect::<String>();
-                let p4 = number.chars().skip(12).collect::<String>();
-                format!(
-                    "{}{}{}{}{}{}{}",
-                    p1, separator, p2, separator, p3, separator, p4
-                )
-            }
-            _ => number,
+        card_number = if let Some(true) = formatted {
+            let separator = separator.unwrap_or('-');
+            let p1 = number.chars().take(4).collect::<String>();
+            let p2 = number.chars().skip(4).take(4).collect::<String>();
+            let p3 = number.chars().skip(8).take(4).collect::<String>();
+            let p4 = number.chars().skip(12).collect::<String>();
+            format!(
+                "{}{}{}{}{}{}{}",
+                p1, separator, p2, separator, p3, separator, p4
+            )
+        } else {
+            number
         };
 
         card_number
@@ -243,7 +237,7 @@ mod tests {
         assert_eq!(card_number.len(), 16);
     }
 
-    // TODO: Look into why some of these tests fail
+    // TODO: Look into why some of these tests fail sometimes
     #[test]
     fn test_credit_card_number_with_separator() {
         let card_number = TestPay::credit_card_number(None, Some(true), Some('-'));
