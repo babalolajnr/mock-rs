@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use crate::calculator::luhn;
+
 use super::base::Base;
 
 pub trait Payment<'a>: Base {
@@ -49,7 +51,7 @@ pub trait Payment<'a>: Base {
         );
 
         card_params.insert(
-            "MasterCard ",
+            "MasterCard",
             vec![
                 "2221###########",
                 "23#############",
@@ -167,7 +169,7 @@ pub trait Payment<'a>: Base {
         formatted: Option<bool>,
         separator: Option<char>,
     ) -> String {
-        let mut card_number = String::new();
+        let card_number;
 
         let card_type = match credit_card_type {
             Some(card_type) => {
@@ -192,13 +194,51 @@ pub trait Payment<'a>: Base {
         };
 
         let mask = Self::random_element(&card_param);
-        let number = Self::numerify(Some(mask));
 
-        // Continue here
+        let mut number = Self::numerify(Some(mask));
+        number = format!("{}{}", number, luhn::compute_check_digit(&number));
 
-        if let Some(true) = formatted {}
+        card_number = match formatted {
+            Some(true) => {
+                let separator = separator.unwrap_or('-');
+                let p1 = number.chars().take(4).collect::<String>();
+                let p2 = number.chars().skip(4).take(4).collect::<String>();
+                let p3 = number.chars().skip(8).take(4).collect::<String>();
+                let p4 = number.chars().skip(12).collect::<String>();
+                format!(
+                    "{}{}{}{}{}{}{}",
+                    p1, separator, p2, separator, p3, separator, p4
+                )
+            }
+            _ => number,
+        };
 
-        // Return the card number
         card_number
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    struct TestPay {}
+    impl Payment<'_> for TestPay {}
+    impl Base for TestPay {}
+
+    #[test]
+    fn test_credit_card_type() {
+        let card_type = TestPay::credit_card_type();
+        assert!(TestPay::card_vendors().contains(&card_type.as_str()));
+    }
+
+    #[test]
+    fn test_credit_card_number() {
+        let card_number = TestPay::credit_card_number(None, None, None);
+        assert_eq!(card_number.len(), 16);
+    }
+
+    #[test]
+    fn test_credit_card_number_with_type() {
+        let card_number = TestPay::credit_card_number(Some("MasterCard"), None, None);
+        assert_eq!(card_number.len(), 16);
     }
 }
