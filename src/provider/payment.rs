@@ -243,6 +243,7 @@ mod tests {
         assert_eq!(card_number.len(), 16);
     }
 
+    // TODO: Look into why some of these tests fail
     #[test]
     fn test_credit_card_number_with_separator() {
         let card_number = TestPay::credit_card_number(None, Some(true), Some('-'));
