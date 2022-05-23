@@ -170,6 +170,7 @@ pub trait Payment<'a>: Base {
         separator: Option<char>,
     ) -> String {
         let card_number;
+        let default_card_param = vec!["2221###########"];
 
         let card_type = match credit_card_type {
             Some(card_type) => {
@@ -190,7 +191,7 @@ pub trait Payment<'a>: Base {
 
         let card_param = match card_params.get(&card_type) {
             Some(card_param) => card_param,
-            None => card_params.get("MasterCard").unwrap(),
+            None => card_params.get("MasterCard").unwrap_or(&default_card_param),
         };
 
         let mask = Self::random_element(&card_param);
@@ -240,5 +241,12 @@ mod tests {
     fn test_credit_card_number_with_type() {
         let card_number = TestPay::credit_card_number(Some("MasterCard"), None, None);
         assert_eq!(card_number.len(), 16);
+    }
+
+    #[test]
+    fn test_credit_card_number_with_separator() {
+        let card_number = TestPay::credit_card_number(None, Some(true), Some('-'));
+        println!("{}", card_number);
+        assert_eq!(card_number.len(), 19);
     }
 }
