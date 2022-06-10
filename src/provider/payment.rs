@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-
-use crate::calculator::luhn;
-
 use super::base::Base;
+use crate::calculator::luhn;
+use chrono::{Date, DateTime, Datelike, TimeZone, Utc};
+use rand::Rng;
+use std::collections::HashMap;
 
 pub trait Payment<'a>: Base {
     fn card_vendors() -> Vec<&'a str> {
@@ -210,6 +210,37 @@ pub trait Payment<'a>: Base {
 
         card_number
     }
+
+    /// Returns a credit card expiration date.
+    /// The expiration date is in the format MM/YY.
+    fn credit_card_expiration_date(valid: Option<bool>) -> String {
+        let valid = valid.unwrap_or(true);
+
+        let random_day: u32 = rand::thread_rng().gen_range(1..28);
+        let random_month: u32 = rand::thread_rng().gen_range(1..12);
+
+        if valid {
+            let now = Utc::now().year();
+            let end = now + 3;
+            let random_year: i32 = rand::thread_rng().gen_range(now..end);
+
+            let date = Utc
+                .ymd(random_year, random_month, random_day)
+                .format("%m/%y");
+
+            return format!("{}", date);
+        }
+
+        let now = Utc::now().year();
+        let end = now - 3;
+        let random_year: i32 = rand::thread_rng().gen_range(end..now);
+
+        let date = Utc
+            .ymd(random_year, random_month, random_day)
+            .format("%m/%y");
+
+        format!("{}", date)
+    }
 }
 
 #[cfg(test)]
@@ -243,5 +274,17 @@ mod tests {
         let card_number = TestPay::credit_card_number(None, Some(true), Some('-'));
         println!("{}", card_number);
         assert_eq!(card_number.len(), 19);
+    }
+
+    #[test]
+    fn test_card_expiration_date_with_valid_set_to_true() {
+        let date = TestPay::credit_card_expiration_date(Some(true));
+        assert_eq!(date.len(), 5);
+    }
+
+    #[test]
+    fn test_card_expiration_date_with_valid_set_to_false() {
+        let date = TestPay::credit_card_expiration_date(Some(false));
+        assert_eq!(date.len(), 5);
     }
 }
