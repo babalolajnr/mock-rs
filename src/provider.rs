@@ -6,3 +6,4 @@ pub mod person;
 pub mod address;
 pub mod barcode;
 pub mod payment;
+pub mod phone_number;
