@@ -8,7 +8,10 @@ pub trait Base {
     }
 
     /// Returns a random element an array/vector
-    fn random_element<'a, T: ?Sized>(arr: &'a Vec<&T>) -> &'a T {
+    fn random_element<'a, T>(arr: &'a Vec<&T>) -> &'a T
+    where
+        T: ?Sized,
+    {
         let random_index = Self::random_index(&arr);
         &arr[random_index]
     }
