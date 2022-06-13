@@ -1,6 +1,6 @@
 use super::base::Base;
 use crate::calculator::luhn;
-use chrono::{Date, DateTime, Datelike, TimeZone, Utc};
+use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
 

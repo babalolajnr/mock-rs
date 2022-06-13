@@ -7,7 +7,8 @@ pub trait PhoneNumber<'a>: Base {
         vec!["###-###-###"]
     }
 
-    fn e164Formats() -> Vec<&'a str> {
+    /// Get the phone number in the format of `###-###-###`.
+    fn e164_formats() -> Vec<&'a str> {
         vec![
             "+1##########",
             "+7##########",
@@ -232,8 +233,8 @@ pub trait PhoneNumber<'a>: Base {
         Self::numerify(Some(Self::random_element(&random_format)))
     }
 
-    fn e164PhoneNumber() -> String {
-        let random_format = Self::e164Formats();
+    fn e164_phone_number() -> String {
+        let random_format = Self::e164_formats();
         Self::numerify(Some(Self::random_element(&random_format)))
     }
 
@@ -259,7 +260,7 @@ mod tests {
 
     #[test]
     fn test_e164_phone_number() {
-        let phone_number = Test::e164PhoneNumber();
+        let phone_number = Test::e164_formats();
         assert!(phone_number.len() > 0);
     }
 

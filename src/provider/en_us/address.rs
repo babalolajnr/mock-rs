@@ -15,7 +15,6 @@ pub struct Address<'a> {
     state: Vec<&'a str>,
     state_abbr: Vec<&'a str>,
     country: Vec<&'a str>,
-    address_formats: Vec<&'a str>,
     secondary_address_formats: Vec<&'a str>,
     person: Box<dyn Person>,
 }
@@ -562,7 +561,6 @@ impl Address<'_> {
                 "Zambia",
                 "Zimbabwe",
             ],
-            address_formats: vec!["{{street_address}}\n{{city}}, {{state_abbr}} {{postcode}}"],
             secondary_address_formats: vec!["Apt. ###", "Suite ###"],
             person: Box::new(PersonProvider::new()),
         }
@@ -600,8 +598,7 @@ impl AddressTrait for Address<'_> {
     }
 
     fn building_number(&self) -> String {
-        Self::bothify(Some(Self::random_element(&self.building_number)))
-            .to_string()
+        Self::bothify(Some(Self::random_element(&self.building_number))).to_string()
     }
 
     fn city(&self) -> String {
@@ -657,19 +654,17 @@ impl AddressTrait for Address<'_> {
     }
 
     fn postcode(&self) -> String {
-        Self::bothify(Some(Self::random_element(&self.postcode)))
-        .to_string()
+        Self::bothify(Some(Self::random_element(&self.postcode))).to_string()
     }
 }
 
 mod tests {
-    use super::*;
+    use crate::provider::{address::Address as AddressTrait, en_us::address::Address};
 
     #[test]
     fn city() {
         let address = Address::new();
         let city = address.city();
-
         assert!(city.len() > 1);
     }
 
@@ -677,8 +672,6 @@ mod tests {
     fn street_name() {
         let address = Address::new();
         let street_name = address.street_name();
-
-        println!("{}", street_name);
         assert!(street_name.len() > 1);
     }
 
@@ -686,48 +679,35 @@ mod tests {
     fn street_address() {
         let address = Address::new();
         let street_address = address.street_address();
-
-        println!("{}", street_address);
         assert!(street_address.len() > 1);
     }
 
     #[test]
     fn address() {
-        let address = Address::new();
-        let address = address.address();
-
-        println!("{}", address);
+        let address = Address::new().address();
         assert!(address.len() > 1);
     }
 
     #[test]
     fn latitude() {
         let latitude = Address::latitude();
-
         assert!(latitude >= -90.0);
         assert!(latitude <= 90.0);
-        println!("{}", latitude);
     }
 
     #[test]
     fn longitude() {
-        let address = Address::new();
         let longitude = Address::longitude();
-
         assert!(longitude >= -180.0);
         assert!(longitude <= 180.0);
-        println!("{}", longitude);
     }
 
     #[test]
     fn local_cordinates() {
-        let address = Address::new();
         let (latitude, longitude) = Address::local_cordinates();
-
         assert!(latitude >= -90.0);
         assert!(latitude <= 90.0);
         assert!(longitude >= -180.0);
         assert!(longitude <= 180.0);
-        println!("{}, {}", latitude, longitude);
     }
 }

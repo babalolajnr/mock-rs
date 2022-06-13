@@ -87,16 +87,6 @@ mod tests {
     struct Test;
     impl Base for Test {}
 
-    impl Test {
-        pub fn first_name_male<'a>(&self) -> &'a str {
-            "John"
-        }
-
-        pub fn last_name<'a>(&self) -> &'a str {
-            "Doe"
-        }
-    }
-
     #[test]
     fn numerify_works() {
         let string = "####";
@@ -124,7 +114,6 @@ mod tests {
     #[test]
     fn generate_random_index_works() {
         let arr = vec![1, 2, 3, 4, 5];
-
         let result = Test::random_index(&arr);
         assert!(result < arr.len());
     }
@@ -132,7 +121,6 @@ mod tests {
     #[test]
     fn random_element_works() {
         let arr = vec!["a", "b", "c", "d", "e"];
-
         let result = Test::random_element(&arr);
         assert!(arr.contains(&result));
     }
@@ -140,9 +128,7 @@ mod tests {
     #[test]
     fn bothify() {
         let string = "?####";
-
-        let test = Test {};
         let result = Test::bothify(Some(string));
-        println!("{}", result);
+        assert_eq!(result.len(), string.len());
     }
 }
