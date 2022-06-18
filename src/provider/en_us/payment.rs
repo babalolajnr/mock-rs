@@ -50,11 +50,10 @@ impl payment::Payment<'_> for Payment {}
 impl Base for Payment {}
 
 mod tests {
-    use crate::provider::en_us::payment::Payment;
 
     #[test]
     fn test_bank_account_number() {
-        let number = Payment::bank_account_number();
+        let number = super::Payment::bank_account_number();
         assert!(number.len() >= 5);
         assert!(number.len() <= 17);
     }
@@ -62,14 +61,14 @@ mod tests {
     #[test]
     fn test_calculate_routing_number_checksum() {
         let routing = "10892900";
-        let checksum = Payment::calculate_routing_number_checksum(&routing);
+        let checksum = super::Payment::calculate_routing_number_checksum(&routing);
         println!("{}", checksum);
         // assert!(checksum <= 9);
     }
 
     #[test]
     fn test_bank_routing_number() {
-        let number = Payment::bank_routing_number();
+        let number = super::Payment::bank_routing_number();
         println!("{}", number);
         assert!(number.len() >= 9);
         assert!(number.len() <= 11);

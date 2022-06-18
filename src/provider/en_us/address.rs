@@ -4,8 +4,7 @@ use crate::provider::person::Person;
 
 use super::person::Person as PersonProvider;
 
-/// EN_US address provider generates random address related
-/// data.
+/// EN_US address provider generates random address related data
 pub struct Address<'a> {
     city_prefix: Vec<&'a str>,
     city_suffix: Vec<&'a str>,

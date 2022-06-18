@@ -14,6 +14,7 @@ pub struct Person<'a> {
 }
 
 impl Base for Person<'_> {}
+impl Miscellaneous for Person<'_>{}
 
 impl<'a> Person<'_> {
     pub fn new() -> Person<'a> {
@@ -3558,14 +3559,14 @@ impl<'a> Person<'_> {
 
     /// example "123-45-6789"
     pub fn ssn(&self) -> String {
-        let area = if Miscellaneous::boolean(None) {
-            Miscellaneous::number_between(Some(1), Some(165))
+        let area = if Self::boolean(None) {
+            Self::number_between(Some(1), Some(165))
         } else {
-            Miscellaneous::number_between(Some(667), Some(899))
+            Self::number_between(Some(667), Some(899))
         };
 
-        let group = Miscellaneous::number_between(Some(1), Some(99));
-        let serial = Miscellaneous::number_between(Some(1), Some(99));
+        let group = Self::number_between(Some(1), Some(99));
+        let serial = Self::number_between(Some(1), Some(99));
 
         format!("{:03}-{:02}-{:04}", area, group, serial)
     }

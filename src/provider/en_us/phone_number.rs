@@ -2,7 +2,7 @@ use rand::{thread_rng, Rng};
 
 use crate::provider::base::Base;
 
-struct PhoneNumber {
+pub struct PhoneNumber {
     formats: Vec<&'static str>,
     formats_with_extension: Vec<&'static str>,
     e_164_format: &'static str,
@@ -60,21 +60,25 @@ impl PhoneNumber {
         }
     }
 
+    /// Generate a random phone number.
     pub fn phone_number(&self) -> String {
         let format = Self::random_element(&self.formats);
         self.parse_format(format)
     }
 
+    /// Generate a random phone number with an extension.
     pub fn phone_number_with_extension(&self) -> String {
         let format = Self::random_element(&self.formats_with_extension);
         self.parse_format(&format)
     }
 
+    /// Generate a random toll-free phone number.
     pub fn toll_free_phone_number(&self) -> String {
         let format = Self::random_element(&self.toll_free_formats);
         self.parse_format(&format)
     }
 
+    /// Generate a random phone number in E.164 format.
     pub fn e_164_phone_number(&self) -> String {
         self.parse_format(&self.e_164_format)
     }
@@ -97,6 +101,7 @@ impl PhoneNumber {
         format
     }
 
+    /// Generate a random area code.
     fn area_code(&self) -> String {
         let exchange_code: u32 = thread_rng().gen_range(200..1000);
         exchange_code.to_string()
