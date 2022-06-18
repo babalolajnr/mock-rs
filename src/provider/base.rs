@@ -38,8 +38,8 @@ pub trait Base {
         random_string
     }
 
-    ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters
-    /// An asterisk ('*') is replaced with either a random number or a random letter
+    ///Replaces hash signs ('#') and question marks ('?') with random numbers and letters.
+    ///An asterisk ('*') is replaced with either a random number or a random letter
     fn bothify(string: Option<&str>) -> String {
         let string = string.unwrap_or("## ??");
 
