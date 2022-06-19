@@ -1,10 +1,7 @@
-use mock_rs::provider::{
-    en_us::person::Person,
-    person::{Gender, PersonTrait},
-};
+// use mock_rs::{Gender, Person, PersonTrait};
 
 fn main() {
-    let first_name = Person::new().first_name(Some(Gender::Male));
+    // let first_name = Person::new().first_name(Some(Gender::Male));
 
-    println!("{}", first_name);
+    // println!("{}", first_name);
 }
