@@ -658,6 +658,7 @@ impl AddressTrait for Address<'_> {
 }
 
 mod tests {
+    #[allow(unused_imports)]
     use super::*;
 
     #[test]
