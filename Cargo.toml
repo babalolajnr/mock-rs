@@ -7,8 +7,8 @@ edition = "2018"
 authors = ["Abdulqudduus Babalola <babalolajnr@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-keywords = ["mock", "faker", "fake", "data", "faker-rs", "mock-rs", "fake-data", "seeding"]
-categories = ["testing", "mock", "faker", "web", "web developement", "database"]
+keywords = ["mock", "faker", "faker-rs", "mock-rs", "fake-data",]
+categories = ["testing", "mock", "faker", "web", "web developement"]
 
 
 [dependencies]
