@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::provider::{base::BaseTrait, universal::payment};
+use crate::provider::{base::BaseTrait, payment::PaymentTrait};
 
 pub struct Payment {}
 
@@ -32,7 +32,11 @@ impl Payment {
             institution
         );
 
-        format!("{}{}", result, Self::calculate_routing_number_checksum(&result))
+        format!(
+            "{}{}",
+            result,
+            Self::calculate_routing_number_checksum(&result)
+        )
     }
 
     fn calculate_routing_number_checksum(routing: &str) -> usize {
@@ -46,7 +50,7 @@ impl Payment {
         checksum
     }
 }
-impl payment::PaymentTrait<'_> for Payment {}
+impl PaymentTrait<'_> for Payment {}
 impl BaseTrait for Payment {}
 
 mod tests {

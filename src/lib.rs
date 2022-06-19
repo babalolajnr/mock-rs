@@ -6,10 +6,10 @@ pub use provider::en_us;
 
 pub use provider::{
     address::AddressTrait,
-    universal::barcode::BarcodeTrait,
+    barcode::BarcodeTrait,
     company::CompanyTrait,
     miscellaneous::MiscellaneousTrait,
-    universal::payment::PaymentTrait,
+    payment::PaymentTrait,
     person::{Gender, PersonTrait},
     phone_number::PhoneNumberTrait,
 };
