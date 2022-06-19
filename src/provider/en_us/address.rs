@@ -658,7 +658,7 @@ impl AddressTrait for Address<'_> {
 }
 
 mod tests {
-    use crate::provider::{address::AddressTrait, en_us::address::Address};
+    use super::*;
 
     #[test]
     fn city() {
