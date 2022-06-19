@@ -1,9 +1,16 @@
 [package]
 name = "mock-rs"
+description = "A Rust crate for generating fake data inspired by FakerPHP"
+repository = "https://github.com/babalolajnr/mock-rs"
 version = "0.1.0"
 edition = "2018"
+authors = ["Abdulqudduus Babalola <babalolajnr@gmail.com>"]
+license = "MIT"
+license-file = "LICENSE"
+readme = "README.md"
+keywords = ["mock", "faker", "fake", "data", "faker-rs", "mock-rs", "fake data", "seeding"]
+categories = ["testing", "mock", "faker", "web", "web developement", "database"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 rand = "0.8.4"
