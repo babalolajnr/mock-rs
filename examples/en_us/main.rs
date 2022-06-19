@@ -1,4 +1,4 @@
-use mock_rs::{Person, PersonTrait};
+use mock_rs::{en_us::Person, PersonTrait};
 
 fn main() {
     let person = Person::new();
@@ -11,4 +11,7 @@ fn main() {
 
     let title = person.title(None);
     println!("{}", title);
+
+    let first_name_male = person.first_name_male();
+    println!("{}", first_name_male);
 }
