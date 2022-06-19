@@ -1,4 +1,4 @@
-pub trait Person {
+pub trait PersonTrait {
     fn name(&self, gender: Option<Gender>) -> String;
 
     fn first_name(&self, gender: Option<Gender>) -> String;
@@ -10,7 +10,7 @@ pub trait Person {
     fn first_name_female(&self) -> String;
 
     fn title(&self, gender: Option<Gender>) -> String;
-    
+
     fn title_male(&self) -> String;
 
     fn title_female(&self) -> String;

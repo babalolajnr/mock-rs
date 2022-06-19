@@ -1,7 +1,7 @@
 use crate::provider::{
-    base::Base,
-    miscellaneous::Miscellaneous,
-    person::{Gender, Person as PersonTrait},
+    base::BaseTrait,
+    miscellaneous::MiscellaneousTrait,
+    person::{Gender, PersonTrait},
 };
 
 pub struct Person<'a> {
@@ -13,8 +13,8 @@ pub struct Person<'a> {
     title_female: Vec<&'a str>,
 }
 
-impl Base for Person<'_> {}
-impl Miscellaneous for Person<'_>{}
+impl BaseTrait for Person<'_> {}
+impl MiscellaneousTrait for Person<'_> {}
 
 impl<'a> Person<'_> {
     pub fn new() -> Person<'a> {
@@ -3513,11 +3513,11 @@ impl<'a> Person<'_> {
         }
     }
 
-    fn suffix(&self) -> String {
+    pub fn suffix(&self) -> String {
         Self::random_element(&self.suffix).to_string()
     }
 
-    fn male_name(&self) -> String {
+    pub fn male_name(&self) -> String {
         Self::random_element(&vec![
             &format!("{} {}", self.first_name_male(), self.last_name()),
             &format!(
@@ -3537,7 +3537,7 @@ impl<'a> Person<'_> {
         .to_string()
     }
 
-    fn female_name(&self) -> String {
+    pub fn female_name(&self) -> String {
         Self::random_element(&vec![
             &format!("{} {}", self.first_name_female(), self.last_name()),
             &format!(

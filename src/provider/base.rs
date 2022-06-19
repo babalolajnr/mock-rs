@@ -1,6 +1,6 @@
 use rand::{thread_rng, Rng};
 
-pub trait Base {
+pub trait BaseTrait {
     /// Returns a index from array/vector
     fn random_index<T>(arr: &[T]) -> usize {
         let random_index = thread_rng().gen_range(0..arr.len());
@@ -85,7 +85,7 @@ mod tests {
     use super::*;
 
     struct Test;
-    impl Base for Test {}
+    impl BaseTrait for Test {}
 
     #[test]
     fn numerify_works() {

@@ -1,8 +1,8 @@
 use crate::calculator::luhn::compute_check_digit;
 
-use super::base::Base;
+use super::base::BaseTrait;
 
-pub trait PhoneNumber<'a>: Base {
+pub trait PhoneNumberTrait<'a>: BaseTrait {
     fn formats() -> Vec<&'a str> {
         vec!["###-###-###"]
     }
@@ -249,8 +249,8 @@ mod tests {
     use super::*;
 
     struct Test;
-    impl PhoneNumber<'_> for Test{}
-    impl Base for Test{}
+    impl PhoneNumberTrait<'_> for Test{}
+    impl BaseTrait for Test{}
 
     #[test]
     fn test_phone_number() {

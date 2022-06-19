@@ -1,4 +1,4 @@
-pub trait Company {
+pub trait CompanyTrait {
     /// Example: 'Acme Ltd'
     fn company(&self) -> String;
 

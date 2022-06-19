@@ -1,6 +1,6 @@
-use crate::provider::address::Address as AddressTrait;
-use crate::provider::base::Base;
-use crate::provider::person::Person;
+use crate::provider::address::AddressTrait;
+use crate::provider::base::BaseTrait;
+use crate::provider::person::PersonTrait;
 
 use super::person::Person as PersonProvider;
 
@@ -15,7 +15,7 @@ pub struct Address<'a> {
     state_abbr: Vec<&'a str>,
     country: Vec<&'a str>,
     secondary_address_formats: Vec<&'a str>,
-    person: Box<dyn Person>,
+    person: Box<dyn PersonTrait>,
 }
 
 impl Address<'_> {
@@ -586,7 +586,7 @@ impl Address<'_> {
     }
 }
 
-impl Base for Address<'_> {}
+impl BaseTrait for Address<'_> {}
 impl AddressTrait for Address<'_> {
     fn city_suffix(&self) -> String {
         Self::random_element(&self.city_suffix).to_string()
@@ -658,7 +658,7 @@ impl AddressTrait for Address<'_> {
 }
 
 mod tests {
-    use crate::provider::{address::Address as AddressTrait, en_us::address::Address};
+    use crate::provider::{address::AddressTrait, en_us::address::Address};
 
     #[test]
     fn city() {

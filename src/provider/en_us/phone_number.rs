@@ -1,6 +1,6 @@
 use rand::{thread_rng, Rng};
 
-use crate::provider::base::Base;
+use crate::provider::base::BaseTrait;
 
 pub struct PhoneNumber {
     formats: Vec<&'static str>,
@@ -113,7 +113,7 @@ impl PhoneNumber {
         exchange_code.to_string()
     }
 }
-impl Base for PhoneNumber {}
+impl BaseTrait for PhoneNumber {}
 
 mod tests {
 

@@ -1,6 +1,6 @@
-use super::base::Base;
+use super::base::BaseTrait;
 
-pub trait Address: Base {
+pub trait AddressTrait: BaseTrait {
     fn city_suffix(&self) -> String;
 
     fn street_suffix(&self) -> String;

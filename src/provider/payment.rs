@@ -1,10 +1,10 @@
-use super::base::Base;
+use super::base::BaseTrait;
 use crate::calculator::luhn;
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
 
-pub trait Payment<'a>: Base {
+pub trait PaymentTrait<'a>: BaseTrait {
     fn card_vendors() -> Vec<&'a str> {
         vec![
             "Visa",
@@ -247,8 +247,8 @@ pub trait Payment<'a>: Base {
 mod tests {
     use super::*;
     struct TestPay {}
-    impl Payment<'_> for TestPay {}
-    impl Base for TestPay {}
+    impl PaymentTrait<'_> for TestPay {}
+    impl BaseTrait for TestPay {}
 
     #[test]
     fn test_credit_card_type() {

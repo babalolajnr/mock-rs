@@ -2,7 +2,7 @@ use std::cmp;
 
 use rand::Rng;
 
-pub trait Miscellaneous {
+pub trait MiscellaneousTrait {
     /// Return a boolean, true or false.
     ///
     /// chance_of_getting_true between 0 (always get false) and 100 (always get true)
@@ -34,7 +34,7 @@ pub trait Miscellaneous {
 mod tests {
     use super::*;
     struct Test{}
-    impl Miscellaneous for Test {}
+    impl MiscellaneousTrait for Test {}
 
 
     #[test]

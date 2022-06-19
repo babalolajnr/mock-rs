@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::provider::{base::Base, payment};
+use crate::provider::{base::BaseTrait, payment};
 
 pub struct Payment {}
 
@@ -46,8 +46,8 @@ impl Payment {
         checksum
     }
 }
-impl payment::Payment<'_> for Payment {}
-impl Base for Payment {}
+impl payment::PaymentTrait<'_> for Payment {}
+impl BaseTrait for Payment {}
 
 mod tests {
 
