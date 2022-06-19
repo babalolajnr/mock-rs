@@ -8,7 +8,7 @@ authors = ["Abdulqudduus Babalola <babalolajnr@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 keywords = ["mock", "faker", "faker-rs", "mock-rs", "fake-data",]
-categories = ["testing", "mock", "faker", "web", "web developement"]
+categories = ["web-programming"]
 
 
 [dependencies]
