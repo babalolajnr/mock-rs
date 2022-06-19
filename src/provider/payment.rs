@@ -1,4 +1,3 @@
-
 use crate::{calculator::luhn, provider::base::BaseTrait};
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
@@ -242,7 +241,27 @@ pub trait PaymentTrait<'a>: BaseTrait {
         format!("{}", date)
     }
 
-    // fn credit_ca
+    /// Returns credit card details with
+    /// 
+    /// * credit_card_type
+    /// * credit_card_number
+    /// * credit_card_expiration_date
+    /// * holder_name
+    /// 
+    /// Returns a HashMap
+    fn credit_card_details(valid: Option<bool>) -> HashMap<&'a str, String> {
+        let credit_card_type = Self::credit_card_type();
+        let credit_card_number = Self::credit_card_number(Some(&credit_card_type), None, None);
+        let name = "Hello";
+        let expiration_date = Self::credit_card_expiration_date(valid);
+
+        let mut details = HashMap::new();
+        details.insert("credit_card_type", credit_card_type);
+        details.insert("credit_card_number", credit_card_number);
+        details.insert("holder_name", name.to_owned());
+        details.insert("expiration_date", expiration_date);
+        details
+    }
 }
 
 #[cfg(test)]
@@ -288,5 +307,12 @@ mod tests {
     fn test_card_expiration_date_with_valid_set_to_false() {
         let date = TestPay::credit_card_expiration_date(Some(false));
         assert_eq!(date.len(), 5);
+    }
+
+    #[test]
+    fn test_card_details() {
+        let details = TestPay::credit_card_details(Some(true));
+        println!("{:?}", details);
+        assert_eq!(details.len(), 4);
     }
 }
