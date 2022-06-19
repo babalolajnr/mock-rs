@@ -1,6 +1,4 @@
-use crate::calculator::ean;
-
-use super::base::BaseTrait;
+use crate::{calculator::ean, provider::base::BaseTrait};
 
 pub trait BarcodeTrait: BaseTrait {
     /// Get random EAN

@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::provider::{base::BaseTrait, payment};
+use crate::provider::{base::BaseTrait, universal::payment};
 
 pub struct Payment {}
 

@@ -1,5 +1,5 @@
-use super::base::BaseTrait;
-use crate::calculator::luhn;
+
+use crate::{calculator::luhn, provider::base::BaseTrait};
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
