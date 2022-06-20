@@ -1,3 +1,5 @@
+use std::{collections::HashMap, fmt::Display};
+
 use rand::{thread_rng, Rng};
 
 pub trait BaseTrait {
@@ -78,6 +80,16 @@ pub trait BaseTrait {
         let idx = rng.gen_range(0..charset.len());
         charset[idx]
     }
+
+    // Get a random Key from a HashMap
+    fn random_key<K, V>(hash_map: &HashMap<K, V>) -> K
+    where
+        K: 'static + Display + ToOwned<Owned = K>,
+    {
+        let keys: Vec<&K> = hash_map.keys().into_iter().map(|k| k).collect();
+        let random_key = Self::random_element(&keys);
+        random_key.to_owned()
+    }
 }
 
 #[cfg(test)]
@@ -130,5 +142,44 @@ mod tests {
         let string = "?####";
         let result = Test::bothify(Some(string));
         assert_eq!(result.len(), string.len());
+    }
+
+    #[test]
+    fn random_key_for_str_slice() {
+        let mut hash_map: HashMap<&str, &str> = HashMap::new();
+        hash_map.insert("a", "b");
+        hash_map.insert("c", "d");
+        hash_map.insert("e", "f");
+
+        let result = Test::random_key(&hash_map);
+
+        assert!(hash_map.contains_key(&result));
+        println!("{}", result);
+    }
+
+    #[test]
+    fn random_key_for_string() {
+        let mut hash_map: HashMap<String, &str> = HashMap::new();
+        hash_map.insert("a".to_string(), "b");
+        hash_map.insert("c".to_string(), "d");
+        hash_map.insert("e".to_string(), "f");
+
+        let result = Test::random_key(&hash_map);
+
+        assert!(hash_map.contains_key(&result));
+        println!("{}", result);
+    }
+
+    #[test]
+    fn random_key_for_numeric_type() {
+        let mut hash_map: HashMap<usize, &str> = HashMap::new();
+        hash_map.insert(1, "b");
+        hash_map.insert(2, "d");
+        hash_map.insert(3, "f");
+
+        let result = Test::random_key(&hash_map);
+
+        assert!(hash_map.contains_key(&result));
+        println!("{}", result);
     }
 }
