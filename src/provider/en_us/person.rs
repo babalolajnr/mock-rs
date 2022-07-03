@@ -1,8 +1,6 @@
-use crate::provider::{
-    base::BaseTrait,
-    miscellaneous::MiscellaneousTrait,
+use crate::{provider::{
     person::{Gender, PersonTrait},
-};
+}, helpers::{base::random_element, miscellaneous::{number_between, boolean}}};
 
 pub struct Person<'a> {
     first_name_female: Vec<&'a str>,
@@ -13,8 +11,6 @@ pub struct Person<'a> {
     title_female: Vec<&'a str>,
 }
 
-impl BaseTrait for Person<'_> {}
-impl MiscellaneousTrait for Person<'_> {}
 
 impl<'a> Person<'_> {
     pub fn new() -> Person<'a> {
@@ -3514,11 +3510,11 @@ impl<'a> Person<'_> {
     }
 
     pub fn suffix(&self) -> String {
-        Self::random_element(&self.suffix).to_string()
+        random_element(&self.suffix).to_string()
     }
 
     pub fn male_name(&self) -> String {
-        Self::random_element(&vec![
+        random_element(&vec![
             &format!("{} {}", self.first_name_male(), self.last_name()),
             &format!(
                 "{} {} {}",
@@ -3538,7 +3534,7 @@ impl<'a> Person<'_> {
     }
 
     pub fn female_name(&self) -> String {
-        Self::random_element(&vec![
+        random_element(&vec![
             &format!("{} {}", self.first_name_female(), self.last_name()),
             &format!(
                 "{} {} {}",
@@ -3559,14 +3555,14 @@ impl<'a> Person<'_> {
 
     /// example "123-45-6789"
     pub fn ssn(&self) -> String {
-        let area = if Self::boolean(None) {
-            Self::number_between(Some(1), Some(165))
+        let area = if boolean(None) {
+            number_between(Some(1), Some(165))
         } else {
-            Self::number_between(Some(667), Some(899))
+            number_between(Some(667), Some(899))
         };
 
-        let group = Self::number_between(Some(1), Some(99));
-        let serial = Self::number_between(Some(1), Some(99));
+        let group = number_between(Some(1), Some(99));
+        let serial = number_between(Some(1), Some(99));
 
         format!("{:03}-{:02}-{:04}", area, group, serial)
     }
@@ -3587,7 +3583,7 @@ impl PersonTrait for Person<'_> {
             Some(Gender::Female) => self.first_name_female(),
             None => {
                 let genders = vec!["Male", "Female"];
-                let gender = Self::random_element(&genders);
+                let gender = random_element(&genders);
 
                 match gender {
                     "Male" => self.first_name_male(),
@@ -3599,15 +3595,15 @@ impl PersonTrait for Person<'_> {
     }
 
     fn last_name(&self) -> String {
-        Self::random_element(&self.last_name).to_string()
+        random_element(&self.last_name).to_string()
     }
 
     fn first_name_male(&self) -> String {
-        Self::random_element(&self.first_name_male).to_string()
+        random_element(&self.first_name_male).to_string()
     }
 
     fn first_name_female(&self) -> String {
-        Self::random_element(&self.first_name_female).to_string()
+        random_element(&self.first_name_female).to_string()
     }
 
     fn title(&self, gender: Option<Gender>) -> String {
@@ -3616,7 +3612,7 @@ impl PersonTrait for Person<'_> {
             Some(Gender::Female) => self.title_female(),
             None => {
                 let genders = vec!["Male", "Female"];
-                let gender = Self::random_element(&genders);
+                let gender = random_element(&genders);
 
                 match gender {
                     "Male" => self.title_male(),
@@ -3628,11 +3624,11 @@ impl PersonTrait for Person<'_> {
     }
 
     fn title_female(&self) -> String {
-        Self::random_element(&self.title_female).to_string()
+        random_element(&self.title_female).to_string()
     }
 
     fn title_male(&self) -> String {
-        Self::random_element(&self.title_male).to_string()
+        random_element(&self.title_male).to_string()
     }
 }
 

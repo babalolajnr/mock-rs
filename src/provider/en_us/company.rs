@@ -1,6 +1,9 @@
 use rand::Rng;
 
-use crate::provider::{base::BaseTrait, company::CompanyTrait, person::PersonTrait};
+use crate::{
+    helpers::base::{random_element, random_index},
+    provider::{company::CompanyTrait, person::PersonTrait},
+};
 
 use super::person::Person;
 
@@ -12,8 +15,6 @@ pub struct Company<'a> {
     ein_prefixes: Vec<u8>,
     person: Box<dyn PersonTrait>,
 }
-
-impl BaseTrait for Company<'_> {}
 
 impl Company<'_> {
     pub fn new() -> Self {
@@ -559,7 +560,7 @@ impl Company<'_> {
             .clone()
             .into_iter()
             .for_each(|catch_phrase| {
-                let catch_phrase = Self::random_element(&catch_phrase);
+                let catch_phrase = random_element(&catch_phrase);
                 result.push(catch_phrase.to_string());
             });
 
@@ -571,7 +572,7 @@ impl Company<'_> {
         let mut result: Vec<String> = vec![];
 
         self.bs_words.clone().into_iter().for_each(|bs| {
-            let bs = Self::random_element(&bs);
+            let bs = random_element(&bs);
             result.push(bs.to_string());
         });
 
@@ -580,7 +581,7 @@ impl Company<'_> {
 
     /// Example: "84-7210772"
     pub fn ein(&self) -> String {
-        let random_index = Self::random_index(&self.ein_prefixes);
+        let random_index = random_index(&self.ein_prefixes);
         let prefix = &self.ein_prefixes[random_index];
 
         let suffix: usize = rand::thread_rng().gen_range(0..9999999);
@@ -595,11 +596,11 @@ impl CompanyTrait for Company<'_> {
     }
 
     fn company_suffix(&self) -> String {
-        Self::random_element(&self.company_suffixes).to_string()
+        random_element(&self.company_suffixes).to_string()
     }
 
     fn job_title(&self) -> String {
-        Self::random_element(&self.job_titles).to_string()
+        random_element(&self.job_titles).to_string()
     }
 }
 

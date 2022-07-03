@@ -1,5 +1,5 @@
+use crate::helpers::base::{random_element, numerify, bothify};
 use crate::provider::address::AddressTrait;
-use crate::provider::base::BaseTrait;
 use crate::provider::person::PersonTrait;
 
 use super::person::Person as PersonProvider;
@@ -566,38 +566,37 @@ impl Address<'_> {
     }
 
     pub fn state(&self) -> String {
-        Self::random_element(&self.state).to_string()
+        random_element(&self.state).to_string()
     }
 
     pub fn state_abbr(&self) -> String {
-        Self::random_element(&self.state_abbr).to_string()
+        random_element(&self.state_abbr).to_string()
     }
 
     pub fn country(&self) -> String {
-        Self::random_element(&self.country).to_string()
+        random_element(&self.country).to_string()
     }
 
     pub fn secondary_address(&self) -> String {
-        Self::numerify(Some(Self::random_element(&self.secondary_address_formats)))
+        numerify(Some(random_element(&self.secondary_address_formats)))
     }
 
     pub fn city_prefix(&self) -> String {
-        Self::random_element(&self.city_prefix).to_string()
+        random_element(&self.city_prefix).to_string()
     }
 }
 
-impl BaseTrait for Address<'_> {}
 impl AddressTrait for Address<'_> {
     fn city_suffix(&self) -> String {
-        Self::random_element(&self.city_suffix).to_string()
+        random_element(&self.city_suffix).to_string()
     }
 
     fn street_suffix(&self) -> String {
-        Self::random_element(&self.street_suffix).to_string()
+        random_element(&self.street_suffix).to_string()
     }
 
     fn building_number(&self) -> String {
-        Self::bothify(Some(Self::random_element(&self.building_number))).to_string()
+        bothify(Some(random_element(&self.building_number))).to_string()
     }
 
     fn city(&self) -> String {
@@ -653,7 +652,7 @@ impl AddressTrait for Address<'_> {
     }
 
     fn postcode(&self) -> String {
-        Self::bothify(Some(Self::random_element(&self.postcode))).to_string()
+        bothify(Some(random_element(&self.postcode))).to_string()
     }
 }
 
