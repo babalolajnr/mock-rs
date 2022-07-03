@@ -1,7 +1,6 @@
 use crate::{provider::{
-    miscellaneous::MiscellaneousTrait,
     person::{Gender, PersonTrait},
-}, helpers::base::random_element};
+}, helpers::{base::random_element, miscellaneous::{number_between, boolean}}};
 
 pub struct Person<'a> {
     first_name_female: Vec<&'a str>,
@@ -12,7 +11,6 @@ pub struct Person<'a> {
     title_female: Vec<&'a str>,
 }
 
-impl MiscellaneousTrait for Person<'_> {}
 
 impl<'a> Person<'_> {
     pub fn new() -> Person<'a> {
@@ -3557,14 +3555,14 @@ impl<'a> Person<'_> {
 
     /// example "123-45-6789"
     pub fn ssn(&self) -> String {
-        let area = if Self::boolean(None) {
-            Self::number_between(Some(1), Some(165))
+        let area = if boolean(None) {
+            number_between(Some(1), Some(165))
         } else {
-            Self::number_between(Some(667), Some(899))
+            number_between(Some(667), Some(899))
         };
 
-        let group = Self::number_between(Some(1), Some(99));
-        let serial = Self::number_between(Some(1), Some(99));
+        let group = number_between(Some(1), Some(99));
+        let serial = number_between(Some(1), Some(99));
 
         format!("{:03}-{:02}-{:04}", area, group, serial)
     }

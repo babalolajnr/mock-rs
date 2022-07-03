@@ -1,6 +1,9 @@
 use rand::Rng;
 
-use crate::{provider::payment::PaymentTrait, MiscellaneousTrait, helpers::base::{numerify, random_element}};
+use crate::{
+    helpers::base::{numerify, random_element},
+    provider::payment::PaymentTrait,
+};
 
 pub struct Payment {}
 
@@ -51,7 +54,6 @@ impl Payment {
     }
 }
 impl PaymentTrait<'_> for Payment {}
-impl MiscellaneousTrait for Payment {}
 
 mod tests {
 

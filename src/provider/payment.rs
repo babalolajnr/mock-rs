@@ -1,12 +1,15 @@
 use crate::{
     calculator::{iban::checksum, luhn},
-    MiscellaneousTrait, helpers::base::{random_element, random_index, numerify, random_key, random_digit, random_letter},
+    helpers::{
+        base::{numerify, random_digit, random_element, random_index, random_key, random_letter},
+        miscellaneous::boolean,
+    },
 };
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
 
-pub trait PaymentTrait<'a>: MiscellaneousTrait {
+pub trait PaymentTrait<'a> {
     fn card_vendors() -> Vec<&'a str> {
         vec![
             "Visa",
@@ -316,7 +319,7 @@ pub trait PaymentTrait<'a>: MiscellaneousTrait {
         for class in expanded_format.chars() {
             match class {
                 'c' => {
-                    if Self::boolean(None) {
+                    if boolean(None) {
                         result.push(random_digit() as char)
                     } else {
                         result.push_str(&random_letter().to_string().as_str().to_uppercase())
@@ -346,7 +349,6 @@ mod tests {
     use super::*;
     struct TestPay {}
     impl PaymentTrait<'_> for TestPay {}
-    impl MiscellaneousTrait for TestPay {}
 
     #[test]
     fn test_credit_card_type() {
