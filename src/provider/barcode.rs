@@ -1,9 +1,9 @@
-use crate::{calculator::ean, provider::base::BaseTrait};
+use crate::{calculator::ean, helpers::base::numerify};
 
-pub trait BarcodeTrait: BaseTrait {
+pub trait BarcodeTrait {
     /// Get random EAN
     fn ean(length: u8) -> String {
-        let code = Self::numerify(Some(&str::repeat("#", (length - 1).into())));
+        let code = numerify(Some(&str::repeat("#", (length - 1).into())));
         format!("{}{}", code, ean::checksum(&code))
     }
 

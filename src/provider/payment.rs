@@ -1,13 +1,12 @@
 use crate::{
     calculator::{iban::checksum, luhn},
-    provider::base::BaseTrait,
-    MiscellaneousTrait,
+    MiscellaneousTrait, helpers::base::{random_element, random_index, numerify, random_key, random_digit, random_letter},
 };
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
 
-pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
+pub trait PaymentTrait<'a>: MiscellaneousTrait {
     fn card_vendors() -> Vec<&'a str> {
         vec![
             "Visa",
@@ -163,7 +162,7 @@ pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
 
     /// Returns a credit card vendor name
     fn credit_card_type() -> String {
-        Self::random_element(&Self::card_vendors()).to_string()
+        random_element(&Self::card_vendors()).to_string()
     }
 
     /// Returns the String of a credit card number.
@@ -183,7 +182,7 @@ pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
             card_type
         } else {
             let card_vendors = Self::card_vendors();
-            let random_index = Self::random_index(&card_vendors);
+            let random_index = random_index(&card_vendors);
             let card_type = card_vendors[random_index];
             card_type
         };
@@ -192,9 +191,9 @@ pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
 
         let card_param = card_params.get(&card_type).unwrap_or(&default_card_param);
 
-        let mask = Self::random_element(&card_param);
+        let mask = random_element(&card_param);
 
-        let mut number = Self::numerify(Some(mask));
+        let mut number = numerify(Some(mask));
         number = format!("{}{}", number, luhn::compute_check_digit(&number));
 
         card_number = if let Some(true) = formatted {
@@ -270,7 +269,7 @@ pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
     /// Get International Bank Account Number (IBAN)
     fn iban(country_code: Option<&str>, prefix: Option<&str>, mut length: Option<u8>) -> String {
         let country_code = country_code
-            .unwrap_or(&Self::random_key(&Self::iban_formats()).to_string())
+            .unwrap_or(&random_key(&Self::iban_formats()).to_string())
             .to_uppercase();
 
         let iban_formats = Self::iban_formats();
@@ -318,14 +317,14 @@ pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
             match class {
                 'c' => {
                     if Self::boolean(None) {
-                        result.push(Self::random_digit() as char)
+                        result.push(random_digit() as char)
                     } else {
-                        result.push_str(&Self::random_letter().to_string().as_str().to_uppercase())
+                        result.push_str(&random_letter().to_string().as_str().to_uppercase())
                     };
                 }
-                'a' => result.push_str(&Self::random_letter().to_string().as_str().to_uppercase()),
-                'n' => result.push(Self::random_digit() as char),
-                _ => result.push_str(&Self::random_letter().to_string().as_str().to_uppercase()),
+                'a' => result.push_str(&random_letter().to_string().as_str().to_uppercase()),
+                'n' => result.push(random_digit() as char),
+                _ => result.push_str(&random_letter().to_string().as_str().to_uppercase()),
             }
         }
 
@@ -348,7 +347,6 @@ mod tests {
     struct TestPay {}
     impl PaymentTrait<'_> for TestPay {}
     impl MiscellaneousTrait for TestPay {}
-    impl BaseTrait for TestPay {}
 
     #[test]
     fn test_credit_card_type() {

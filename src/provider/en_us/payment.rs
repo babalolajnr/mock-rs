@@ -1,6 +1,6 @@
 use rand::Rng;
 
-use crate::{provider::{base::BaseTrait, payment::PaymentTrait}, MiscellaneousTrait};
+use crate::{provider::payment::PaymentTrait, MiscellaneousTrait, helpers::base::{numerify, random_element}};
 
 pub struct Payment {}
 
@@ -11,7 +11,7 @@ impl Payment {
         let length: usize = rand::thread_rng().gen_range(5..17);
         let mask = "#".repeat(length);
 
-        Self::numerify(Some(&mask))
+        numerify(Some(&mask))
     }
 
     /// Returns a random bank routing number
@@ -19,7 +19,7 @@ impl Payment {
         // Length between 9 and 11
         let district: usize = rand::thread_rng().gen_range(1..12);
         let vec = &vec![&0, &0, &0, &0, &20, &20, &60];
-        let district_type = Self::random_element(vec);
+        let district_type = random_element(vec);
         let state: usize = rand::thread_rng().gen_range(1..9);
         let clearing_center: usize = rand::thread_rng().gen_range(1..9);
         let institution: usize = rand::thread_rng().gen_range(1000..9999);
@@ -52,7 +52,6 @@ impl Payment {
 }
 impl PaymentTrait<'_> for Payment {}
 impl MiscellaneousTrait for Payment {}
-impl BaseTrait for Payment {}
 
 mod tests {
 

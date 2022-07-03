@@ -1,6 +1,7 @@
 use rand::{thread_rng, Rng};
 
-use crate::provider::base::BaseTrait;
+use crate::helpers::base::{random_element, numerify};
+
 
 pub struct PhoneNumber {
     formats: Vec<&'static str>,
@@ -62,19 +63,19 @@ impl PhoneNumber {
 
     /// Generate a random phone number.
     pub fn phone_number(&self) -> String {
-        let format = Self::random_element(&self.formats);
+        let format = random_element(&self.formats);
         self.parse_format(format)
     }
 
     /// Generate a random phone number with an extension.
     pub fn phone_number_with_extension(&self) -> String {
-        let format = Self::random_element(&self.formats_with_extension);
+        let format = random_element(&self.formats_with_extension);
         self.parse_format(&format)
     }
 
     /// Generate a random toll-free phone number.
     pub fn toll_free_phone_number(&self) -> String {
-        let format = Self::random_element(&self.toll_free_formats);
+        let format = random_element(&self.toll_free_formats);
         self.parse_format(&format)
     }
 
@@ -88,14 +89,14 @@ impl PhoneNumber {
         let mut format = format.to_string();
         format = format.replace("{area_code}", &self.area_code());
         format = format.replace("{exchange_code}", &self.exchange_code());
-        format = format.replace("{prefix}", &Self::numerify(Some("####")));
+        format = format.replace("{prefix}", &numerify(Some("####")));
         format = format.replace(
             "{toll_free_area_code}",
-            Self::random_element(&self.toll_free_area_codes),
+            random_element(&self.toll_free_area_codes),
         );
 
         if format.contains("#") {
-            return Self::numerify(Some(&format));
+            return numerify(Some(&format));
         }
 
         format
@@ -113,7 +114,6 @@ impl PhoneNumber {
         exchange_code.to_string()
     }
 }
-impl BaseTrait for PhoneNumber {}
 
 mod tests {
 

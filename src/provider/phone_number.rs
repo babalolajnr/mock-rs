@@ -1,8 +1,6 @@
-use crate::calculator::luhn::compute_check_digit;
+use crate::{calculator::luhn::compute_check_digit, helpers::base::{numerify, random_element}};
 
-use super::base::BaseTrait;
-
-pub trait PhoneNumberTrait<'a>: BaseTrait {
+pub trait PhoneNumberTrait<'a> {
     fn formats() -> Vec<&'a str> {
         vec!["###-###-###"]
     }
@@ -230,16 +228,16 @@ pub trait PhoneNumberTrait<'a>: BaseTrait {
 
     fn phone_number() -> String {
         let random_format = Self::formats();
-        Self::numerify(Some(Self::random_element(&random_format)))
+        numerify(Some(random_element(&random_format)))
     }
 
     fn e164_phone_number() -> String {
         let random_format = Self::e164_formats();
-        Self::numerify(Some(Self::random_element(&random_format)))
+        numerify(Some(random_element(&random_format)))
     }
 
     fn imei() -> String {
-        let imei = Self::numerify(Some("##############"));
+        let imei = numerify(Some("##############"));
 
         format!("{}{}", imei, compute_check_digit(&imei))
     }
@@ -250,7 +248,6 @@ mod tests {
 
     struct Test;
     impl PhoneNumberTrait<'_> for Test{}
-    impl BaseTrait for Test{}
 
     #[test]
     fn test_phone_number() {

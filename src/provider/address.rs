@@ -1,6 +1,7 @@
-use super::base::BaseTrait;
+use crate::helpers::base::random_index;
 
-pub trait AddressTrait: BaseTrait {
+
+pub trait AddressTrait {
     fn city_suffix(&self) -> String;
 
     fn street_suffix(&self) -> String;
@@ -33,7 +34,7 @@ pub trait AddressTrait: BaseTrait {
     }
 
     fn get_format(formats: Vec<String>) -> String {
-        let random_index = Self::random_index(&formats);
+        let random_index = random_index(&formats);
         formats[random_index].to_string()
     }
 }
