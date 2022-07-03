@@ -81,10 +81,21 @@ pub trait BaseTrait {
         charset[idx]
     }
 
+    /// Get random letter
+    fn random_letter() -> char {
+        let charset_string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string();
+        let charset_vec: Vec<char> = charset_string.chars().collect();
+
+        let mut rng = rand::thread_rng();
+        let idx = rng.gen_range(0..charset_vec.len());
+
+        charset_vec[idx]
+    }
+
     // Get a random Key from a HashMap
-    fn random_key<K, V>(hash_map: &HashMap<K, V>) -> K
+    fn random_key<'a, K, V>(hash_map: &HashMap<K, V>) -> K
     where
-        K: 'static + Display + ToOwned<Owned = K>,
+        K: 'a + Display + ToOwned<Owned = K>,
     {
         let keys: Vec<&K> = hash_map.keys().into_iter().map(|k| k).collect();
         let random_key = Self::random_element(&keys);
@@ -181,5 +192,13 @@ mod tests {
 
         assert!(hash_map.contains_key(&result));
         println!("{}", result);
+    }
+
+    #[test]
+    fn get_random_letter() {
+        let random_letter = Test::random_letter();
+        println!("{}", random_letter);
+
+        assert!(random_letter.is_alphabetic());
     }
 }
