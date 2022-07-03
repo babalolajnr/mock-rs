@@ -1,8 +1,8 @@
-use crate::{provider::base::BaseTrait, PaymentTrait};
+use crate::{provider::base::BaseTrait, MiscellaneousTrait, PaymentTrait};
 
 pub struct Payment;
 impl PaymentTrait<'_> for Payment {}
 impl BaseTrait for Payment {}
-impl Payment {
+impl MiscellaneousTrait for Payment {}
+impl Payment {}
     
-}
