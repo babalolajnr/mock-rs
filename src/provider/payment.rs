@@ -1,9 +1,13 @@
-use crate::{calculator::luhn, provider::base::BaseTrait};
+use crate::{
+    calculator::{iban::checksum, luhn},
+    provider::base::BaseTrait,
+    MiscellaneousTrait,
+};
 use chrono::{Datelike, TimeZone, Utc};
 use rand::Rng;
 use std::collections::HashMap;
 
-pub trait PaymentTrait<'a>: BaseTrait {
+pub trait PaymentTrait<'a>: BaseTrait + MiscellaneousTrait {
     fn card_vendors() -> Vec<&'a str> {
         vec![
             "Visa",
@@ -242,12 +246,12 @@ pub trait PaymentTrait<'a>: BaseTrait {
     }
 
     /// Returns credit card details with
-    /// 
+    ///
     /// * credit_card_type
     /// * credit_card_number
     /// * credit_card_expiration_date
     /// * holder_name
-    /// 
+    ///
     /// Returns a HashMap
     fn credit_card_details(valid: Option<bool>) -> HashMap<&'a str, String> {
         let credit_card_type = Self::credit_card_type();
@@ -262,6 +266,80 @@ pub trait PaymentTrait<'a>: BaseTrait {
         details.insert("expiration_date", expiration_date);
         details
     }
+
+    /// Get International Bank Account Number (IBAN)
+    fn iban(country_code: Option<&str>, prefix: Option<&str>, mut length: Option<u8>) -> String {
+        let country_code = country_code
+            .unwrap_or(&Self::random_key(&Self::iban_formats()).to_string())
+            .to_uppercase();
+
+        let iban_formats = Self::iban_formats();
+
+        let mut format = if iban_formats.contains_key(country_code.as_str()) {
+            iban_formats.get(country_code.as_str())
+        } else {
+            None
+        };
+
+        if let None = length {
+            length = if let None = format {
+                Some(24)
+            } else {
+                let mut length = 0;
+
+                for part in format.unwrap() {
+                    let (_class, group_count) = part;
+
+                    length = length + group_count;
+                }
+
+                Some(length)
+            };
+        }
+
+        let default_format = &vec![('n', length.unwrap())];
+
+        if format == None {
+            format = Some(default_format);
+        }
+
+        let mut expanded_format = "".to_string();
+
+        for item in format.unwrap() {
+            let (class, length) = item;
+            let format_part = class.to_string().as_str().repeat(*length as usize);
+            expanded_format.push_str(&format_part);
+        }
+
+        let mut result = prefix.unwrap_or("").to_string();
+        expanded_format = (&expanded_format[result.len()..]).to_string();
+
+        for class in expanded_format.chars() {
+            match class {
+                'c' => {
+                    if Self::boolean(None) {
+                        result.push(Self::random_digit() as char)
+                    } else {
+                        result.push_str(&Self::random_letter().to_string().as_str().to_uppercase())
+                    };
+                }
+                'a' => result.push_str(&Self::random_letter().to_string().as_str().to_uppercase()),
+                'n' => result.push(Self::random_digit() as char),
+                _ => result.push_str(&Self::random_letter().to_string().as_str().to_uppercase()),
+            }
+        }
+
+        let checksum = checksum(
+            format!(
+                "{country_code}00{result}",
+                country_code = country_code,
+                result = result
+            )
+            .as_str(),
+        );
+
+        format!("{}{}{}", country_code, checksum, result)
+    }
 }
 
 #[cfg(test)]
@@ -269,6 +347,7 @@ mod tests {
     use super::*;
     struct TestPay {}
     impl PaymentTrait<'_> for TestPay {}
+    impl MiscellaneousTrait for TestPay {}
     impl BaseTrait for TestPay {}
 
     #[test]
@@ -314,5 +393,12 @@ mod tests {
         let details = TestPay::credit_card_details(Some(true));
         println!("{:?}", details);
         assert_eq!(details.len(), 4);
+    }
+
+    #[test]
+    fn iban() {
+        let iban = TestPay::iban(None, None, None);
+        println!("{}", iban);
+        assert!(iban.len() > 0);
     }
 }
