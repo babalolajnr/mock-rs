@@ -13,4 +13,5 @@ pub use provider::{
     payment::PaymentTrait,
     person::{Gender, PersonTrait},
     phone_number::PhoneNumberTrait,
+    color::ColorTrait,
 };
