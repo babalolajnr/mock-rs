@@ -194,12 +194,16 @@ pub trait ColorTrait<'a> {
         let g = color.chars().skip(3).take(2).collect::<String>();
         let b = color.chars().skip(5).take(2).collect::<String>();
 
-
         [
             format!("{}", i64::from_str_radix(&r, 16).unwrap()),
             format!("{}", i64::from_str_radix(&g, 16).unwrap()),
             format!("{}", i64::from_str_radix(&b, 16).unwrap()),
         ]
+    }
+
+    /// Generate `RGB` color string
+    fn rgb_color() -> String {
+        format!("rgb({})", Self::rgb_color_as_array().join(","))
     }
 }
 
@@ -225,5 +229,12 @@ mod tests {
     fn test_rgb_color_as_array() {
         let rgb_color = Test::rgb_color_as_array();
         assert_eq!(rgb_color.len(), 3);
+    }
+
+    #[test]
+    fn test_rgb_color() {
+        let rgb_color = Test::rgb_color();
+        assert!(rgb_color.len() > 0);
+        assert!(rgb_color.contains("rgb"));
     }
 }
