@@ -187,6 +187,7 @@ pub trait ColorTrait<'a> {
     }
 
     /// Generate `RGB` color as an array
+    /// e.g `[121,121,121]`
     fn rgb_color_as_array() -> [String; 3] {
         let color = Self::hex_color();
 
@@ -202,13 +203,18 @@ pub trait ColorTrait<'a> {
     }
 
     /// Generate `RGB` color string
+    /// e.g `121,121,121`
     fn rgb_color() -> String {
         format!("{}", Self::rgb_color_as_array().join(","))
     }
 
+    /// Generate `RGB` css color string.
+    /// e.g `rgb(121,121,121)`
     fn rgb_css_color() -> String {
         format!("rgb({})", Self::rgb_color_as_array().join(","))
     }
+
+
 }
 
 #[cfg(test)]
