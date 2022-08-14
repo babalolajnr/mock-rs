@@ -1,3 +1,5 @@
+use rand::Rng;
+
 use crate::helpers::{base::random_element, miscellaneous::number_between};
 
 pub trait ColorTrait<'a> {
@@ -244,6 +246,15 @@ pub trait ColorTrait<'a> {
             number_between(Some(0), Some(100)),
         ]
     }
+
+    /// Generate random `rgba` css color
+    fn rgba_css_color() -> String {
+        format!(
+            "rgba({},{:.1})",
+            Self::rgb_color(),
+            rand::thread_rng().gen::<f32>()
+        )
+    }
 }
 
 #[cfg(test)]
@@ -282,5 +293,11 @@ mod tests {
         let rgb_color = Test::rgb_color();
         assert!(rgb_color.len() > 0);
         println!("{}", rgb_color)
+    }
+
+    #[test]
+    fn test_rgba_css_color(){
+        let rgba_color = Test::rgba_css_color();
+        println!("{}", rgba_color)
     }
 }
