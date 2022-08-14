@@ -163,7 +163,9 @@ pub trait ColorTrait<'a> {
     /// Basic usage:
     ///
     /// ```
-    /// let hex_color = hex_color();
+    /// use mock_rs::{Color, ColorTrait};
+    /// 
+    /// let hex_color = Color::hex_color();
     /// assert_eq!(hex_color.len(), 7);
     /// ```
     fn hex_color() -> String {
@@ -179,7 +181,9 @@ pub trait ColorTrait<'a> {
     /// Basic usage:
     ///
     /// ```
-    /// let safe_hex_color = safe_hex_color();
+    /// use mock_rs::{Color, ColorTrait};
+    /// 
+    /// let safe_hex_color = Color::safe_hex_color();
     /// assert_eq!(safe_hex_color.len(), 7);
     /// ```
     fn safe_hex_color() -> String {
