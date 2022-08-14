@@ -1,4 +1,4 @@
-use crate::helpers::miscellaneous::number_between;
+use crate::helpers::{base::random_element, miscellaneous::number_between};
 
 pub trait ColorTrait<'a> {
     fn safe_color_names() -> [&'a str; 15] {
@@ -214,7 +214,17 @@ pub trait ColorTrait<'a> {
         format!("rgb({})", Self::rgb_color_as_array().join(","))
     }
 
+    /// Generate safe color name
+    fn safe_color_name() -> String {
+        let safe_color_names_vec = &Self::safe_color_names().to_vec();
+        random_element(safe_color_names_vec).to_string()
+    }
 
+    /// Generate safe color name
+    fn color_name() -> String {
+        let all_color_names_vec = &Self::all_color_names().to_vec();
+        random_element(all_color_names_vec).to_string()
+    }
 }
 
 #[cfg(test)]
