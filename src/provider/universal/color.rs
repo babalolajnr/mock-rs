@@ -1,7 +1,7 @@
 use crate::helpers::{base::random_element, miscellaneous::number_between};
 use rand::Rng;
 
-/// This struct contains methods relating to random color generation
+/// `Color` struct contains methods relating to random color generation
 pub struct Color;
 
 impl<'a> Color {
