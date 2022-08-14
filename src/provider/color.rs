@@ -154,41 +154,57 @@ pub trait ColorTrait<'a> {
         ]
     }
 
-   /// Generate random Hex color
-   /// 
-   /// # Examples
-   /// 
-   /// Basic usage:
-   /// 
-   /// ```
-   /// let hex_color = hex_color();
-   /// assert_eq!(hex_color.len(), 7);
-   /// ```
+    /// Generate random Hex color
+    ///
+    /// # Examples
+    ///
+    /// Basic usage:
+    ///
+    /// ```
+    /// let hex_color = hex_color();
+    /// assert_eq!(hex_color.len(), 7);
+    /// ```
     fn hex_color() -> String {
         let rand_number = number_between(Some(1), Some(16777215));
         let hex = format!("{rand_number:x}");
         format!("#{:0>6}", hex)
     }
 
-    /// Generate random  safe hex color
-   /// 
-   /// # Examples
-   /// 
-   /// Basic usage:
-   /// 
-   /// ```
-   /// let safe_hex_color = safe_hex_color();
-   /// assert_eq!(safe_hex_color.len(), 7);
-   /// ```
-   fn safe_hex_color() -> String {
-    let rand_number = number_between(Some(1), Some(255));
-    let hex = format!("{rand_number:x}");
-    format!("#{:0>6}", hex)
-}    
+    /// Generate random safe hex color
+    ///
+    /// # Examples
+    ///
+    /// Basic usage:
+    ///
+    /// ```
+    /// let safe_hex_color = safe_hex_color();
+    /// assert_eq!(safe_hex_color.len(), 7);
+    /// ```
+    fn safe_hex_color() -> String {
+        let rand_number = number_between(Some(1), Some(255));
+        let hex = format!("{rand_number:x}");
+        format!("#{:0>6}", hex)
+    }
+
+    /// Generate `RGB` color as an array
+    fn rgb_color_as_array() -> [String; 3] {
+        let color = Self::hex_color();
+
+        let r = color.chars().skip(1).take(2).collect::<String>();
+        let g = color.chars().skip(3).take(2).collect::<String>();
+        let b = color.chars().skip(5).take(2).collect::<String>();
+
+
+        [
+            format!("{}", i64::from_str_radix(&r, 16).unwrap()),
+            format!("{}", i64::from_str_radix(&g, 16).unwrap()),
+            format!("{}", i64::from_str_radix(&b, 16).unwrap()),
+        ]
+    }
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
     struct Test;
     impl<'a> ColorTrait<'a> for Test {}
@@ -197,5 +213,17 @@ mod tests{
     fn test_hex_color() {
         let hex_color = Test::hex_color();
         assert_eq!(hex_color.len(), 7)
+    }
+
+    #[test]
+    fn test_safe_hex_color() {
+        let safe_hex_color = Test::safe_hex_color();
+        assert_eq!(safe_hex_color.len(), 7)
+    }
+
+    #[test]
+    fn test_rgb_color_as_array() {
+        let rgb_color = Test::rgb_color_as_array();
+        assert_eq!(rgb_color.len(), 3);
     }
 }
