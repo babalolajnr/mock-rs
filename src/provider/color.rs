@@ -225,6 +225,25 @@ pub trait ColorTrait<'a> {
         let all_color_names_vec = &Self::all_color_names().to_vec();
         random_element(all_color_names_vec).to_string()
     }
+
+    /// Generate random hsl color
+    fn hsl_color() -> String {
+        format!(
+            "{},{},{}",
+            number_between(Some(0), Some(360)),
+            number_between(Some(0), Some(100)),
+            number_between(Some(0), Some(100))
+        )
+    }
+
+    /// Generate random hsl color array
+    fn hsl_color_as_array() -> [u32; 3] {
+        [
+            number_between(Some(0), Some(360)),
+            number_between(Some(0), Some(100)),
+            number_between(Some(0), Some(100)),
+        ]
+    }
 }
 
 #[cfg(test)]
