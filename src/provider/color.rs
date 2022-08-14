@@ -203,6 +203,10 @@ pub trait ColorTrait<'a> {
 
     /// Generate `RGB` color string
     fn rgb_color() -> String {
+        format!("{}", Self::rgb_color_as_array().join(","))
+    }
+
+    fn rgb_css_color() -> String {
         format!("rgb({})", Self::rgb_color_as_array().join(","))
     }
 }
@@ -232,9 +236,16 @@ mod tests {
     }
 
     #[test]
+    fn test_rgb_css_color() {
+        let rgb_color = Test::rgb_css_color();
+        assert!(rgb_color.len() > 0);
+        assert!(rgb_color.contains("rgb"));
+    }
+
+    #[test]
     fn test_rgb_color() {
         let rgb_color = Test::rgb_color();
         assert!(rgb_color.len() > 0);
-        assert!(rgb_color.contains("rgb"));
+        println!("{}", rgb_color)
     }
 }
