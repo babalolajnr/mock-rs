@@ -292,12 +292,12 @@ mod tests {
     fn test_rgb_color() {
         let rgb_color = Test::rgb_color();
         assert!(rgb_color.len() > 0);
-        println!("{}", rgb_color)
     }
 
     #[test]
     fn test_rgba_css_color(){
         let rgba_color = Test::rgba_css_color();
-        println!("{}", rgba_color)
+        assert!(rgba_color.len() > 0);
+        assert!(rgba_color.contains("rgba"));
     }
 }
