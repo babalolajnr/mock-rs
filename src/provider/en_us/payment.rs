@@ -74,7 +74,6 @@ mod tests {
     #[test]
     fn test_bank_routing_number() {
         let number = super::Payment::bank_routing_number();
-        println!("{}", number);
         assert!(number.len() >= 9);
         assert!(number.len() <= 11);
     }
