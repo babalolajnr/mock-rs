@@ -205,7 +205,7 @@ impl<'a> Color {
     /// use mock_rs::Color;
     ///
     /// let rgb_color_as_array = Color::rgb_color_as_array();
-    /// assert_eq!(rgb_color.len(), 3);
+    /// assert_eq!(rgb_color_as_array.len(), 3);
     /// ```
     pub fn rgb_color_as_array() -> [String; 3] {
         let color = Self::hex_color();
