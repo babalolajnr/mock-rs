@@ -68,8 +68,7 @@ mod tests {
     fn test_calculate_routing_number_checksum() {
         let routing = "10892900";
         let checksum = super::Payment::calculate_routing_number_checksum(&routing);
-        println!("{}", checksum);
-        // assert!(checksum <= 9);
+        assert!(checksum <= 9);
     }
 
     #[test]
