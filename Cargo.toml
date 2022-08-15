@@ -2,7 +2,7 @@
 name = "mock-rs"
 description = "A Rust crate for generating fake data inspired by FakerPHP"
 repository = "https://github.com/babalolajnr/mock-rs"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2018"
 authors = ["Abdulqudduus Babalola <babalolajnr@gmail.com>"]
 license = "MIT"
